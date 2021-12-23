@@ -1,5 +1,9 @@
 import Login from "./Login";
+import Register from "./Register";
+import ResetPassword from"./ResetPassword"
 
 export {
-  Login
+  Login,
+  Register,
+  ResetPassword
 }

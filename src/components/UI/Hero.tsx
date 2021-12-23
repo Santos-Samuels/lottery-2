@@ -3,6 +3,7 @@ import styled from "styled-components"
 const Content = styled.div`
   font-size: 1.5rem;
   text-align: center;
+  display: none;
 
   & h1,
   & h2 {
@@ -22,6 +23,11 @@ const Content = styled.div`
     padding: 6px 0;
     border-radius: 25px;
     margin: 20px auto;
+  }
+
+  @media (min-width: 820px) {
+    font-size: 2rem;
+    display: block;
   }
 `
 
