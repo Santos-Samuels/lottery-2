@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { IRecentBet } from "@src/context";
+import { IBet } from "@src/context";
 
 const Item = styled.article<{ color: string }>`
   border-left: 5px solid ${(props) => props.color};
@@ -25,7 +25,7 @@ const Item = styled.article<{ color: string }>`
   }
 `;
 
-const RecentBetItem: React.FC<{recentBet: IRecentBet}> = (props) => {
+const RecentBetItem: React.FC<{recentBet: IBet}> = (props) => {
   return (
     <Item color={props.recentBet.color}>
       <h4>{props.recentBet.bet}</h4>

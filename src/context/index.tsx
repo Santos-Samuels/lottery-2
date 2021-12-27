@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { DUMMY_RECENTS_BET, DUMMY_GAME_TYPES } from "./DummyData";
 
-export interface IRecentBet {
+export interface IBet {
   id: number;
   type: string;
   color: string;
@@ -16,22 +16,22 @@ export interface IGameType {
 }
 
 interface IAppContext {
-  recentsBet: IRecentBet[];
+  recentsBet: IBet[];
   gameTypes: IGameType[];
-  currentTypeGame: string,
-  updateCurrentTypeGame: (newCurrentTypeGame: string) => void
+  currentTypeGame: IGameType,
+  updateCurrentTypeGame: (newCurrentTypeGame: IGameType, isToggleable: boolean) => void
 }
 
 export const AppContext = React.createContext({} as IAppContext)
 
 export const AppProvider: React.FC = (props) => {
-  const [recentsBet, setRecentsBet] = useState<IRecentBet[]>(DUMMY_RECENTS_BET)
+  const [recentsBet, setRecentsBet] = useState<IBet[]>(DUMMY_RECENTS_BET)
   const [gameTypes, setGameTypes] = useState<IGameType[]>(DUMMY_GAME_TYPES)
-  const [currentTypeGame, setCurentTypeGame] = useState('')
+  const [currentTypeGame, setCurentTypeGame] = useState<IGameType>({type: '', color: ''})
 
-  const updateCurrentTypeGame = (newCurrentTypeGame: string) => {
-    if (currentTypeGame === newCurrentTypeGame) {
-      setCurentTypeGame('')
+  const updateCurrentTypeGame = (newCurrentTypeGame: IGameType, isToggleable: boolean) => {
+    if (currentTypeGame.type === newCurrentTypeGame.type && isToggleable) {
+      setCurentTypeGame(newCurrentTypeGame)
       return
     }
     

@@ -9,6 +9,10 @@ import Filter from "./sections/Filter"
 import AppContainer from "./Layout/AppContainer"
 import Nav from "./Layout/Nav"
 import Footer from "./Layout/Footer"
+import HeaderRecentGame from "./sections/HeaderRecentGame"
+import Ball from "./Game/Ball"
+import BallsList from "./Game/BallsList"
+
 
 export const responsiveValue = 'min-width: 820px'
 
@@ -23,5 +27,8 @@ export {
   Filter,
   AppContainer,
   Nav,
-  Footer
+  Footer,
+  HeaderRecentGame,
+  Ball,
+  BallsList
 }

@@ -8,7 +8,7 @@ const Container = styled.div`
 
   & p {
     color: #868686;
-    margin-right: 5px;
+    margin-right: 15px;
   }
 
   @media (min-width: 820px) {
@@ -20,7 +20,7 @@ const Filter: React.FC = () => {
   return (
     <Container>
       <p>Filters</p>
-      <TypeButtonList />
+      <TypeButtonList isToggleable={true} />
     </Container>
   );
 };
