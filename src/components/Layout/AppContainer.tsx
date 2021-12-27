@@ -7,7 +7,7 @@ const Container = styled.div`
     min-height: calc(100vh - 177px);
   }
 
-  @media (min-width: 820px) {
+  @media (min-width: 1000px) {
     & main {
       margin: 30px 90px;
     }

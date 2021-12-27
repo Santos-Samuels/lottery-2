@@ -12,6 +12,9 @@ import Footer from "./Layout/Footer"
 import HeaderRecentGame from "./sections/HeaderRecentGame"
 import Ball from "./Game/Ball"
 import BallsList from "./Game/BallsList"
+import CartItem from "./Cart/CartItem"
+import CartList from "./Cart/CartList"
+import Cart from "./Cart/Cart"
 
 
 export const responsiveValue = 'min-width: 820px'
@@ -30,5 +33,8 @@ export {
   Footer,
   HeaderRecentGame,
   Ball,
-  BallsList
+  BallsList, 
+  CartItem,
+  CartList,
+  Cart
 }
