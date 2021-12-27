@@ -12,7 +12,7 @@ const Container = styled.form`
     display: flex;
     flex-direction: column;
     width: 360px;
-    margin: auto;
+    margin: 25px auto;
   }
 
   & input {

@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import { Login, Register, ResetPassword } from "./";
+import { Login, Register, ResetPassword, Home } from "./";
 import '../index.css'
 
 const App: React.FC = () => {
@@ -10,7 +10,7 @@ const App: React.FC = () => {
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/" element={<h1>home</h1>} />
+        <Route path="/" element={<Home />} />
       </Routes>
     </BrowserRouter>
   );
