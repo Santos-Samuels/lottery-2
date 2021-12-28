@@ -15,6 +15,8 @@ import BallsList from "./Game/BallsList"
 import CartItem from "./Cart/CartItem"
 import CartList from "./Cart/CartList"
 import Cart from "./Cart/Cart"
+import ActionButton from "./UI/ActionButton"
+import ActionButtonList from "./sections/ActionButtonList"
 
 
 export const responsiveValue = 'min-width: 820px'
@@ -36,5 +38,7 @@ export {
   BallsList, 
   CartItem,
   CartList,
-  Cart
+  Cart,
+  ActionButton,
+  ActionButtonList
 }

@@ -1,8 +1,8 @@
-import { AppContainer, TypeButtonList, BallsList, Cart } from '@components/index'
+import { AppContainer, TypeButtonList, BallsList, Cart, ActionButtonList } from '@components/index'
 import styled from 'styled-components';
 
 const HeaderContent = styled.header`
-  margin: 20px 0;
+  margin: 20px 0 5px;
 
   & p:first-child {
     text-transform: uppercase;
@@ -18,7 +18,7 @@ const HeaderContent = styled.header`
   }
 
   @media (min-width: 820px) {
-    margin: 30px 0;
+    margin: 30px 0 15px;
 
     & div {
       margin: 30px 0;
@@ -32,7 +32,7 @@ const Content = styled.div`
     grid-template-columns: auto 35%;
     
     & section:first-child {
-      margin-right: 20px;
+      margin-right: 35px;
     }
   }
 
@@ -66,6 +66,8 @@ const NewBet: React.FC = () => {
           </HeaderContent>
 
           <BallsList />
+
+          <ActionButtonList />
         </section>
 
         <section>
