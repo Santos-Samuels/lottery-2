@@ -1,4 +1,6 @@
-import { AppContainer, TypeButtonList, BallsList, Cart, ActionButtonList } from '@components/index'
+import { AppContainer, TypeButtonList, BallsList, Cart, ActionButtonList, CartModal } from '@components/index'
+import { useApp } from '@src/hooks/useapp';
+import { useState } from 'react';
 import styled from 'styled-components';
 
 const HeaderContent = styled.header`
@@ -39,20 +41,43 @@ const Content = styled.div`
   @media (min-width: 1100px) {
     grid-template-columns: auto 30%;
   }
+`
 
-  @media (min-width: 1300px) {
-    grid-template-columns: auto 25%;
+const Div = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  & button {
+    font-size: 20px;
+    background-color: transparent;
+    border: 1px solid #868686;
+    color: #868686;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  & button:hover {
+    background-color: #868686;
+    color: #FFFFFF;
   }
 `
 
 const NewBet: React.FC = () => {
+  const {windowWidth} = useApp()
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   return (
     <AppContainer>
       <Content>
         <section>
           <HeaderContent>
-            <p><strong>New bet</strong> for mega-sena</p>
+            <Div>
+              <p><strong>New bet</strong> for <span>mega-sena</span></p>
+              
+              {windowWidth < 950 && <button onClick={() => setIsModalOpen(!isModalOpen)}><i className="bi bi-cart3" /></button>}
+            </Div>
 
             <div>
               <h4>Choose a game</h4> <br />
@@ -71,7 +96,7 @@ const NewBet: React.FC = () => {
         </section>
 
         <section>
-          <Cart />
+          {windowWidth >= 950 ? <Cart /> : <CartModal isOpen={isModalOpen} closeModalHandler={() => setIsModalOpen(!isModalOpen)} />}
         </section>
       </Content>
     </AppContainer>

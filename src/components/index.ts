@@ -17,6 +17,8 @@ import CartList from "./Cart/CartList"
 import Cart from "./Cart/Cart"
 import ActionButton from "./UI/ActionButton"
 import ActionButtonList from "./sections/ActionButtonList"
+import Modal from "./UI/Modal"
+import CartModal from "./sections/CartModal"
 
 
 export const responsiveValue = 'min-width: 820px'
@@ -40,5 +42,7 @@ export {
   CartList,
   Cart,
   ActionButton,
-  ActionButtonList
+  ActionButtonList,
+  Modal,
+  CartModal
 }

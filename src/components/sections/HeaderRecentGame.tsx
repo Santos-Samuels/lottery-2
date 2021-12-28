@@ -1,4 +1,5 @@
 import { Filter } from '@components/index'
+import { useApp } from '@src/hooks/useapp';
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from 'styled-components';
@@ -35,12 +36,7 @@ const Section = styled.section`
 `
 
 const HeaderRecentGame: React.FC = () => {
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth)
-  
-  useEffect(() => {
-    window.addEventListener("resize", () => setWindowWidth(window.innerWidth));
-    return () => window.removeEventListener("resize", () => setWindowWidth(window.innerWidth));
-  }, [])
+  const {windowWidth} = useApp()
 
   return (
     <Section>

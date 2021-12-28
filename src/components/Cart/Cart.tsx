@@ -36,12 +36,26 @@ const CartTitle = styled.p`
   margin: 30px 15px;
 `
 
-const Cart: React.FC = () => {
-  const {cartTotal} = useApp()
+const CartHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  & i {
+    font-size: 40px;
+    cursor: pointer;
+  }
+`
+
+const Cart: React.FC<{closeModal?: () => void}> = (props) => {
+  const {cartTotal, windowWidth} = useApp()
 
   return (
     <Container>
-      <CartTitle><strong>cart</strong></CartTitle>
+      <CartHeader>
+        <CartTitle><strong>cart</strong></CartTitle>
+        {windowWidth < 950 && <i className="bi bi-x" onClick={props.closeModal} />}
+      </CartHeader>
 
       <CartList />
 

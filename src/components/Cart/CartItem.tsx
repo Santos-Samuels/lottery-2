@@ -18,7 +18,7 @@ const Item = styled.article<{color: string}>`
   }
 
   & li {
-    margin-bottom: 20px;
+    margin: 10px;
     border-left: 4px solid ${props => props.color};
     border-radius: 4px;
     list-style: none;
