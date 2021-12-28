@@ -1,4 +1,4 @@
-import { IBet } from "@src/context";
+import { IBet } from "@src/store/interfaces";
 import styled from "styled-components";
 
 const Item = styled.article<{color: string}>`

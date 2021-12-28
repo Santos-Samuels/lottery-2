@@ -30,22 +30,17 @@ const Container = styled.div<{scrollType: string}>`
   }
 `
 
+const EmpetyText = styled.h3`
+  text-align: center;
+  opacity: 0.4;
+`
+
 const CartList: React.FC = () => {
   const {cartItems} = useApp()
   const ref = useRef<HTMLHeadingElement>(null)
+
+  if (cartItems.length === 0) return <EmpetyText>The cart is still empety</EmpetyText>
   
-  const scrollHandler = () => {
-    if (ref.current?.clientHeight && ref.current?.clientHeight >= 230) return 'scroll'
-
-    return 'hidden'
-  }
-
-  
-
-  // useEffect(() => {
-  //   console.log(ref.current?.clientWidth);
-  // }, [ref.current?.clientHeight])
-
   return (
     <Container scrollType={ref.current?.clientHeight && ref.current?.clientHeight >= 230 ? 'scroll' : 'hidden'}>
       <div ref={ref}>

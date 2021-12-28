@@ -1,5 +1,5 @@
+import { IBet } from "@src/store/interfaces";
 import styled from "styled-components";
-import { IBet } from "@src/context";
 
 const Item = styled.article<{ color: string }>`
   border-left: 5px solid ${(props) => props.color};

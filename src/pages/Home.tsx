@@ -1,10 +1,11 @@
 import { RecentBetList, AppContainer, HeaderRecentGame } from "@components/index";
+import { useApp } from "@src/hooks/useapp";
 import { Navigate } from "react-router-dom";
 
 const Home: React.FC = () => {
-  const valid = false;
+  const {isLogged} = useApp()
 
-  if (valid) return <Navigate replace to="/login" />;
+  if (!isLogged) return <Navigate replace to="/login" />;
 
   return (
     <AppContainer>

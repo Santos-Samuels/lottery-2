@@ -2,9 +2,9 @@ import { RecentBetItem }  from "@components/index"
 import { useApp } from "@src/hooks/useapp";
 
 const RecentBetList: React.FC = () => {
-  const {recentsBet, currentTypeGame} = useApp()
+  const {recentsBet, currentGameRole} = useApp()
 
-  if (!currentTypeGame.type) {
+  if (!currentGameRole.type) {
     return (
       <>
         { recentsBet.map(recentBet => <RecentBetItem key={recentBet.id} recentBet={recentBet} />) }
@@ -14,7 +14,7 @@ const RecentBetList: React.FC = () => {
 
   return (
     <>
-      { recentsBet.map(recentBet => recentBet.type === currentTypeGame.type && <RecentBetItem key={recentBet.id} recentBet={recentBet} />) }
+      { recentsBet.map(recentBet => recentBet.type === currentGameRole.type && <RecentBetItem key={recentBet.id} recentBet={recentBet} />) }
     </>
   );
 };

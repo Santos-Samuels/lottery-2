@@ -1,7 +1,21 @@
 import { AuthContent, AuthContainer, Hero } from "@components/index";
-import { Link } from "react-router-dom";
+import { useApp } from "@src/hooks/useapp";
+import api from "@src/services/api";
+import { useEffect } from "react";
+import { Link, Navigate } from "react-router-dom";
 
 const Login: React.FC = () => {
+  const {isLogged, logIn, lotteryRoles} = useApp()
+  console.log(lotteryRoles);
+  
+  // const user = { email: 'ari2@luby.com.br', password: 'secret' }
+  // useEffect(() => {
+  //   api.post('/login', user).then(response => console.log(response.data)).catch(error => { console.log(error);
+  //    })
+  // }, [])
+
+  if (isLogged) return <Navigate replace to="/" />;
+
   return (
     <AuthContainer>
       <Hero />
@@ -11,7 +25,7 @@ const Login: React.FC = () => {
         
         <form>
           <input type="email" id="userEmail" placeholder="Email" />
-          <input type="password" id="userPassword" placeholder="Password" />
+          <input type="password" id="userPassword" autoComplete="on" placeholder="Password" />
 
           <Link
             to="/reset-password"
@@ -25,7 +39,7 @@ const Login: React.FC = () => {
             I forget my password
           </Link>
 
-          <button>
+          <button onClick={logIn}>
             Log In <i className="bi bi-arrow-right"></i>
           </button>
         </form>

@@ -1,6 +1,7 @@
 import { AppContainer, TypeButtonList, BallsList, Cart, ActionButtonList, CartModal } from '@components/index'
 import { useApp } from '@src/hooks/useapp';
 import { useState } from 'react';
+import { Navigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const HeaderContent = styled.header`
@@ -65,8 +66,10 @@ const Div = styled.div`
 `
 
 const NewBet: React.FC = () => {
-  const {windowWidth} = useApp()
+  const {windowWidth, currentGameRole, isLogged} = useApp()
   const [isModalOpen, setIsModalOpen] = useState(false)
+
+  if (!isLogged) return <Navigate replace to="/login" />;
 
   return (
     <AppContainer>
@@ -74,7 +77,7 @@ const NewBet: React.FC = () => {
         <section>
           <HeaderContent>
             <Div>
-              <p><strong>New bet</strong> for <span>mega-sena</span></p>
+              <p><strong>New bet</strong> for <span>{currentGameRole.type}</span></p>
               
               {windowWidth < 950 && <button onClick={() => setIsModalOpen(!isModalOpen)}><i className="bi bi-cart3" /></button>}
             </Div>
@@ -86,7 +89,7 @@ const NewBet: React.FC = () => {
             
             <p>
               <strong>Fill your bet</strong> <br />
-              Mark as many numbers as you want up to a maximum of 50. Win by hitting 15, 16, 17, 18, 19, 20 or none of the 20 numbers drawn.
+              {currentGameRole.description}
             </p>
           </HeaderContent>
 

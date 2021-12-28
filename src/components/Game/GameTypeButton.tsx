@@ -1,4 +1,5 @@
 import { useApp } from "@src/hooks/useapp";
+import { IGameRole } from "@src/store/interfaces";
 import styled from "styled-components";
 
 const Button = styled.button<{color: string, active: boolean}>`
@@ -20,17 +21,16 @@ const Button = styled.button<{color: string, active: boolean}>`
 `
 
 interface IProps {
-  type: string;
-  color: string;
+  gameRole: IGameRole
   isToggleable: boolean;
 }
 
 const GameTypeButton: React.FC<IProps> = (props) => {
-  const { currentTypeGame, updateCurrentTypeGame } = useApp()
+  const { currentGameRole, updateCurrentTypeGame } = useApp()
 
   return (
-    <Button color={props.color} active={currentTypeGame.type === props.type} onClick={() => updateCurrentTypeGame({type: props.type, color: props.color}, props.isToggleable)}>
-      {props.type}
+    <Button color={props.gameRole.color} active={currentGameRole.type === props.gameRole.type} onClick={() => updateCurrentTypeGame(props.gameRole, props.isToggleable)}>
+      {props.gameRole.type}
     </Button>
   );
 };

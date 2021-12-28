@@ -3,16 +3,15 @@ import { useApp } from "@src/hooks/useapp";
 import { useEffect } from "react";
 
 const TypeButtonList: React.FC<{isToggleable: boolean}> = (props) => {
-  const {gameTypes, updateCurrentTypeGame} = useApp()
-
+  const {lotteryRoles, updateCurrentTypeGame} = useApp()
   
   useEffect(() => {
-    if (!props.isToggleable) updateCurrentTypeGame({type: gameTypes[0].type, color: gameTypes[0].color}, false)
+    if (!props.isToggleable) updateCurrentTypeGame(lotteryRoles.types[0], false)
   }, [])
 
   return (
     <>
-      {gameTypes.map(game => <GameTypeButton key={game.type} type={game.type} color={game.color} isToggleable={props.isToggleable} /> )}
+      {lotteryRoles.types.map(gameRole => <GameTypeButton key={gameRole.type} gameRole={gameRole} isToggleable={props.isToggleable} /> )}
     </>
   );
 };

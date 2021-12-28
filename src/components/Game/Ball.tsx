@@ -27,10 +27,10 @@ interface IProps {
 
 const Ball: React.FC<IProps> = (props) => {
   const [isActive, setIsActive] = useState(false)
-  const {currentTypeGame} = useApp()
+  const {currentGameRole} = useApp()
 
   return (
-    <Content value={props.number} active={isActive} color={currentTypeGame.color} onClick={() => setIsActive(!isActive)}>
+    <Content value={props.number} active={isActive} color={currentGameRole.color} onClick={() => setIsActive(!isActive)}>
       <h2>{props.number.toString().padStart(2, "0")}</h2>
     </Content>
   );
