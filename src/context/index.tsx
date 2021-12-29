@@ -15,12 +15,13 @@ interface IAppContext {
   removeBetNumber: (number: number) => void;
   clearCurrentBet: () => void;
   completeCurrentBet: () => void;
+  addToCart: () => void
 
   recentsBet: IBet[];
   cartItems: IBet[];
   cartTotal: number;
   windowWidth: number;
-  lotteryRoles: ILotteryRoles
+  lotteryRoles: ILotteryRoles,
 }
 
 export const AppContext = React.createContext({} as IAppContext);
@@ -75,6 +76,17 @@ export const AppProvider: React.FC = (props) => {
     dispatch({ type: BetActionsType.COMPLETE_GAME, payload: { number: 0, currentRole: currentGameRole }})
   }
 
+  const addToCart = () => {
+    const newBet = currentBet.sort((a: number, b: number) => a - b).toString().replace(/,/g, ', ')
+    const newBetItem: IBet = {id: Date.now(), bet: newBet, color: currentGameRole.color, price: currentGameRole.price, type: currentGameRole.type, date: new Date}
+    
+    if (!cartItems.some(element => JSON.stringify(element.bet) === JSON.stringify(currentBet)) && currentBet.length === currentGameRole.max_number) {
+      setCartItems(prevItems => [...prevItems, newBetItem]);
+      clearCurrentBet()
+      return;
+    }
+  };
+
   useEffect(() => {
     window.addEventListener("resize", () => setWindowWidth(window.innerWidth));
     return () =>
@@ -109,6 +121,7 @@ export const AppProvider: React.FC = (props) => {
         removeBetNumber,
         clearCurrentBet,
         completeCurrentBet,
+        addToCart
       }}
     >
       {props.children}

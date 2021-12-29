@@ -30,7 +30,7 @@ const Container = styled.div`
 `
 
 const ActionButtonList: React.FC = () => {
-  const {clearCurrentBet, completeCurrentBet} = useApp()
+  const {clearCurrentBet, completeCurrentBet, addToCart} = useApp()
 
   return (
     <Container>
@@ -39,7 +39,7 @@ const ActionButtonList: React.FC = () => {
         <ActionButton fill={false} actionHandler={clearCurrentBet}>Clear game</ActionButton>
       </div>
 
-      <ActionButton fill={true} actionHandler={() => console.log('added to cart')}><i className='bi bi-cart3'/> Add to cart</ActionButton>
+      <ActionButton fill={true} actionHandler={addToCart}><i className='bi bi-cart3'/> Add to cart</ActionButton>
     </Container>
   );
 };
