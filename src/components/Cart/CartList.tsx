@@ -33,7 +33,7 @@ const Container = styled.div<{scrollType: string}>`
 
 const EmpetyText = styled.h3`
   text-align: center;
-  opacity: 0.4;
+  opacity: 0.5;
 `
 
 const CartList: React.FC = () => {

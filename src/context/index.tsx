@@ -3,7 +3,6 @@ import { IBet, IGameRole, ILotteryRoles } from "@src/store/interfaces";
 import { BetActionsType, betReducer } from "@src/store/reducer/betReducer";
 import { CartActionsType, cartReducer } from "@src/store/reducer/cartReducer";
 import React, { useEffect, useReducer, useState } from "react";
-import { DUMMY_RECENTS_BET } from "./DummyData";
 
 interface IAppContext {
   lotteryRoles: ILotteryRoles,
@@ -35,13 +34,12 @@ const initialCart: IBet[] = []
 export const AppProvider: React.FC = (props) => {
   const [lotteryRoles, setLotteryRoles] = useState<ILotteryRoles>({min_cart_value: 0, types: []});
   const [isLogged, setIsLogged] = useState(false)
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [currentGameRole, setCurentGameRole] = useState<IGameRole>(initialGameRole);
   const [currentBet, dispatchBet] = useReducer(betReducer, initialBet)
   const [cartItems, dispatchCart] = useReducer(cartReducer, initialCart)
-
-  const [recentsBet, setRecentsBet] = useState<IBet[]>(DUMMY_RECENTS_BET);
   const [cartTotal, setCartTotal] = useState(0);
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [recentsBet, setRecentsBet] = useState<IBet[]>([]);
 
   const logIn = () => {
     setIsLogged(true)
