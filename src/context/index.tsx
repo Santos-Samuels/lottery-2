@@ -1,14 +1,20 @@
-import Login from "@src/pages/ResetPassword";
 import api from "@src/services/api";
 import { IBet, IGameRole, ILotteryRoles } from "@src/store/interfaces";
-import React, { useEffect, useState } from "react";
+import { BetActionsType, betReducer } from "@src/store/reducer/betReducer";
+import React, { useEffect, useReducer, useState } from "react";
 import { DUMMY_RECENTS_BET, DUMMY_CART } from "./DummyData";
 
 interface IAppContext {
   isLogged: boolean;
-  logIn: () => void;
   currentGameRole: IGameRole;
+  currentBet: number[]
+
+  logIn: () => void;
   updateCurrentTypeGame: (newCurrentTypeGame: IGameRole, isToggleable: boolean) => void;
+  addBetNumber: (number: number) => void;
+  removeBetNumber: (number: number) => void;
+  clearCurrentBet: () => void;
+  completeCurrentBet: () => void;
 
   recentsBet: IBet[];
   cartItems: IBet[];
@@ -20,16 +26,22 @@ interface IAppContext {
 export const AppContext = React.createContext({} as IAppContext);
 
 const initialGameRole: IGameRole = {id: 0, color: '', description: '', max_number: 0, price: 0, range: 0, type: ''}
+const initialBet: number[] = []
 
 export const AppProvider: React.FC = (props) => {
   const [lotteryRoles, setLotteryRoles] = useState<ILotteryRoles>({min_cart_value: 0, types: []});
   const [isLogged, setIsLogged] = useState(false)
   const [currentGameRole, setCurentGameRole] = useState<IGameRole>(initialGameRole);
+  const [currentBet, dispatch] = useReducer(betReducer, initialBet)
 
-  const [recentsBet, setRecentsBet] = useState<IBet[]>(DUMMY_RECENTS_BET);
   const [cartItems, setCartItems] = useState<IBet[]>(DUMMY_CART);
+  const [recentsBet, setRecentsBet] = useState<IBet[]>(DUMMY_RECENTS_BET);
   const [cartTotal, setCartTotal] = useState(0);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  const logIn = () => {
+    setIsLogged(true)
+  }
 
   const updateCurrentTypeGame = (
     newCurrentTypeGame: IGameRole,
@@ -41,10 +53,26 @@ export const AppProvider: React.FC = (props) => {
     }
 
     setCurentGameRole(newCurrentTypeGame);
+    dispatch({ type: BetActionsType.CLEAR_GAME, payload: { number: 0 }})
   };
   
-  const logIn = () => {
-    setIsLogged(true)
+  const addBetNumber = (number: number) => {
+    if (currentBet.length < currentGameRole.max_number)
+      dispatch({ type: BetActionsType.ADD_NUMBER, payload: { number } })
+  }
+  
+  const removeBetNumber = (number: number) => {
+    if (currentBet.length > 0)
+      dispatch({ type: BetActionsType.REMOVE_NUMBER, payload: { number } })
+  }
+  
+  const clearCurrentBet = () => {
+    if (currentBet.length > 0)
+      dispatch({ type: BetActionsType.CLEAR_GAME, payload: { number: 0 }})
+  }
+  
+  const completeCurrentBet = () => {
+    dispatch({ type: BetActionsType.COMPLETE_GAME, payload: { number: 0, currentRole: currentGameRole }})
   }
 
   useEffect(() => {
@@ -74,8 +102,13 @@ export const AppProvider: React.FC = (props) => {
         
         lotteryRoles,
         isLogged,
+        currentBet,
         logIn,
-        updateCurrentTypeGame
+        updateCurrentTypeGame,
+        addBetNumber,
+        removeBetNumber,
+        clearCurrentBet,
+        completeCurrentBet,
       }}
     >
       {props.children}

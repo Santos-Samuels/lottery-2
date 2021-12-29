@@ -22,9 +22,14 @@ const Button = styled.button<{fill: boolean}>`
   }
 `
 
-const ActionButton: React.FC<{fill: boolean}> = (props) => {
+interface IProps {
+  fill: boolean;
+  actionHandler: () => void;
+}
+
+const ActionButton: React.FC<IProps> = (props) => {
   return (
-    <Button fill={props.fill}>
+    <Button fill={props.fill} onClick={props.actionHandler}>
       {props.children}
     </Button>
   );

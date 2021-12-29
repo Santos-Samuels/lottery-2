@@ -1,8 +1,8 @@
 import { useApp } from "@src/hooks/useapp";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
-const Content = styled.button<{color: string, active: boolean}>`
+const Button = styled.button<{color: string, active: boolean}>`
   width: 60px;
   height: 60px;
   border-radius: 50%;
@@ -27,12 +27,33 @@ interface IProps {
 
 const Ball: React.FC<IProps> = (props) => {
   const [isActive, setIsActive] = useState(false)
-  const {currentGameRole} = useApp()
+  const {currentGameRole, currentBet, addBetNumber, removeBetNumber} = useApp()
+
+  const onClickHandler = () => {
+    if (currentBet.length < currentGameRole.max_number && !isActive) {
+      addBetNumber(props.number)
+      return
+    }
+    
+    setIsActive(false)
+    removeBetNumber(props.number);
+  }
+
+  useEffect(() => {
+    if (currentBet.length === 0) {
+      setIsActive(false)
+      return
+    }
+
+    if (currentBet.includes(props.number)) {
+      setIsActive(true)
+    }
+  }, [currentBet])
 
   return (
-    <Content value={props.number} active={isActive} color={currentGameRole.color} onClick={() => setIsActive(!isActive)}>
+    <Button value={props.number} active={isActive} color={currentGameRole.color} onClick={onClickHandler}>
       <h2>{props.number.toString().padStart(2, "0")}</h2>
-    </Content>
+    </Button>
   );
 };
 

@@ -66,7 +66,7 @@ const Div = styled.div`
 `
 
 const NewBet: React.FC = () => {
-  const {windowWidth, currentGameRole, isLogged} = useApp()
+  const {windowWidth, currentGameRole, isLogged, currentBet} = useApp()
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   if (!isLogged) return <Navigate replace to="/login" />;
@@ -91,6 +91,8 @@ const NewBet: React.FC = () => {
               <strong>Fill your bet</strong> <br />
               {currentGameRole.description}
             </p>
+
+            <p>{currentBet.length === 0 ? 'void' : JSON.stringify(currentBet)}  {currentBet.length}</p>
           </HeaderContent>
 
           <BallsList />

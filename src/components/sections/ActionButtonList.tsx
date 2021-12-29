@@ -1,4 +1,5 @@
 import { ActionButton } from '@components/index'
+import { useApp } from '@src/hooks/useapp';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -29,14 +30,16 @@ const Container = styled.div`
 `
 
 const ActionButtonList: React.FC = () => {
+  const {clearCurrentBet, completeCurrentBet} = useApp()
+
   return (
     <Container>
       <div>
-        <ActionButton fill={false}>Complete game</ActionButton>
-        <ActionButton fill={false}>Clear game</ActionButton>
+        <ActionButton fill={false} actionHandler={completeCurrentBet}>Complete game</ActionButton>
+        <ActionButton fill={false} actionHandler={clearCurrentBet}>Clear game</ActionButton>
       </div>
 
-      <ActionButton fill={true}><i className='bi bi-cart3'/> Add to cart</ActionButton>
+      <ActionButton fill={true} actionHandler={() => console.log('added to cart')}><i className='bi bi-cart3'/> Add to cart</ActionButton>
     </Container>
   );
 };

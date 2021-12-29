@@ -1,6 +1,7 @@
 import { CartItem } from '@components/index'
 import { useApp } from '@src/hooks/useapp';
-import { useEffect, useRef } from 'react';
+import api from '@src/services/api';
+import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
 const Container = styled.div<{scrollType: string}>`
