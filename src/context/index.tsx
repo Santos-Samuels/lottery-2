@@ -3,7 +3,7 @@ import { IBet, IGameRole, ILotteryRoles } from "@src/store/interfaces";
 import { BetActionsType, betReducer } from "@src/store/reducer/betReducer";
 import { CartActionsType, cartReducer } from "@src/store/reducer/cartReducer";
 import React, { useEffect, useReducer, useState } from "react";
-import { DUMMY_RECENTS_BET, DUMMY_CART } from "./DummyData";
+import { DUMMY_RECENTS_BET } from "./DummyData";
 
 interface IAppContext {
   lotteryRoles: ILotteryRoles,
@@ -81,8 +81,8 @@ export const AppProvider: React.FC = (props) => {
 
   const addCartItem = () => {
     if (!cartItems.some(element => JSON.stringify(element.bet) === JSON.stringify(currentBet)) && currentBet.length === currentGameRole.max_number) {
-      const newBet = currentBet.sort((a: number, b: number) => a - b).toString().replace(/,/g, ', ')
-      const newCartItem: IBet = {id: Date.now(), bet: newBet, color: currentGameRole.color, price: currentGameRole.price, type: currentGameRole.type, date: new Date}
+      const sortedNewItem = currentBet.sort((a: number, b: number) => a - b)
+      const newCartItem: IBet = {id: Date.now(), bet: sortedNewItem, color: currentGameRole.color, price: currentGameRole.price, type: currentGameRole.type, date: new Date}
 
       setCartTotal(prevTotal => prevTotal + newCartItem.price)
       dispatchCart({type: CartActionsType.ADD_ITEM, payload: { newCartItem }});

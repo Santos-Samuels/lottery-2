@@ -52,7 +52,7 @@ const CartItem: React.FC<{ item: IBet }> = (props) => {
       <button onClick={() => removeCartItem(props.item.id)}><i className="bi bi-trash"/></button>
 
       <li>
-        <h4>{props.item.bet}</h4>
+        <h4>{props.item.bet.toString().replace(/,/g, ', ')}</h4>
 
         <p>
           <strong>{props.item.type}</strong>{" "}

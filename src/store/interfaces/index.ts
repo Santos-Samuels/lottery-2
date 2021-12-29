@@ -3,7 +3,7 @@ export interface IBet {
   type: string;
   color: string;
   price: number;
-  bet: string;
+  bet: number[];
   date: Date;
 }
 
