@@ -1,13 +1,18 @@
 import api from "@src/services/api";
 import { IBet, IGameRole, ILotteryRoles } from "@src/store/interfaces";
 import { BetActionsType, betReducer } from "@src/store/reducer/betReducer";
+import { CartActionsType, cartReducer } from "@src/store/reducer/cartReducer";
 import React, { useEffect, useReducer, useState } from "react";
 import { DUMMY_RECENTS_BET, DUMMY_CART } from "./DummyData";
 
 interface IAppContext {
+  lotteryRoles: ILotteryRoles,
   isLogged: boolean;
+  windowWidth: number;
   currentGameRole: IGameRole;
   currentBet: number[]
+  cartItems: IBet[];
+  cartTotal: number;
 
   logIn: () => void;
   updateCurrentTypeGame: (newCurrentTypeGame: IGameRole, isToggleable: boolean) => void;
@@ -15,27 +20,25 @@ interface IAppContext {
   removeBetNumber: (number: number) => void;
   clearCurrentBet: () => void;
   completeCurrentBet: () => void;
-  addToCart: () => void
+  addCartItem: () => void;
+  removeCartItem: (id: number) => void;
 
   recentsBet: IBet[];
-  cartItems: IBet[];
-  cartTotal: number;
-  windowWidth: number;
-  lotteryRoles: ILotteryRoles,
 }
 
 export const AppContext = React.createContext({} as IAppContext);
 
 const initialGameRole: IGameRole = {id: 0, color: '', description: '', max_number: 0, price: 0, range: 0, type: ''}
 const initialBet: number[] = []
+const initialCart: IBet[] = []
 
 export const AppProvider: React.FC = (props) => {
   const [lotteryRoles, setLotteryRoles] = useState<ILotteryRoles>({min_cart_value: 0, types: []});
   const [isLogged, setIsLogged] = useState(false)
   const [currentGameRole, setCurentGameRole] = useState<IGameRole>(initialGameRole);
-  const [currentBet, dispatch] = useReducer(betReducer, initialBet)
+  const [currentBet, dispatchBet] = useReducer(betReducer, initialBet)
+  const [cartItems, dispatchCart] = useReducer(cartReducer, initialCart)
 
-  const [cartItems, setCartItems] = useState<IBet[]>(DUMMY_CART);
   const [recentsBet, setRecentsBet] = useState<IBet[]>(DUMMY_RECENTS_BET);
   const [cartTotal, setCartTotal] = useState(0);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -54,37 +57,47 @@ export const AppProvider: React.FC = (props) => {
     }
 
     setCurentGameRole(newCurrentTypeGame);
-    dispatch({ type: BetActionsType.CLEAR_GAME, payload: { number: 0 }})
+    dispatchBet({ type: BetActionsType.CLEAR_GAME, payload: { number: 0 }})
   };
   
   const addBetNumber = (number: number) => {
     if (currentBet.length < currentGameRole.max_number)
-      dispatch({ type: BetActionsType.ADD_NUMBER, payload: { number } })
+      dispatchBet({ type: BetActionsType.ADD_NUMBER, payload: { number } })
   }
   
   const removeBetNumber = (number: number) => {
     if (currentBet.length > 0)
-      dispatch({ type: BetActionsType.REMOVE_NUMBER, payload: { number } })
+      dispatchBet({ type: BetActionsType.REMOVE_NUMBER, payload: { number } })
   }
   
   const clearCurrentBet = () => {
     if (currentBet.length > 0)
-      dispatch({ type: BetActionsType.CLEAR_GAME, payload: { number: 0 }})
+      dispatchBet({ type: BetActionsType.CLEAR_GAME, payload: { number: 0 }})
   }
   
   const completeCurrentBet = () => {
-    dispatch({ type: BetActionsType.COMPLETE_GAME, payload: { number: 0, currentRole: currentGameRole }})
+    dispatchBet({ type: BetActionsType.COMPLETE_GAME, payload: { number: 0, currentRole: currentGameRole }})
   }
 
-  const addToCart = () => {
-    const newBet = currentBet.sort((a: number, b: number) => a - b).toString().replace(/,/g, ', ')
-    const newBetItem: IBet = {id: Date.now(), bet: newBet, color: currentGameRole.color, price: currentGameRole.price, type: currentGameRole.type, date: new Date}
-    
+  const addCartItem = () => {
     if (!cartItems.some(element => JSON.stringify(element.bet) === JSON.stringify(currentBet)) && currentBet.length === currentGameRole.max_number) {
-      setCartItems(prevItems => [...prevItems, newBetItem]);
+      const newBet = currentBet.sort((a: number, b: number) => a - b).toString().replace(/,/g, ', ')
+      const newCartItem: IBet = {id: Date.now(), bet: newBet, color: currentGameRole.color, price: currentGameRole.price, type: currentGameRole.type, date: new Date}
+
+      setCartTotal(prevTotal => prevTotal + newCartItem.price)
+      dispatchCart({type: CartActionsType.ADD_ITEM, payload: { newCartItem }});
       clearCurrentBet()
       return;
     }
+
+    return;
+  };
+
+  const removeCartItem = (id : number) => {
+    const item = cartItems.find(element => element.id === id)
+    setCartTotal(prevTotal => prevTotal - (item ? item.price : 0))
+
+    dispatchCart({type: CartActionsType.REMOVE_ITEM, payload: { id }});
   };
 
   useEffect(() => {
@@ -106,22 +119,23 @@ export const AppProvider: React.FC = (props) => {
   return (
     <AppContext.Provider
       value={{
-        recentsBet,
-        currentGameRole,
-        cartItems,
-        cartTotal,
-        windowWidth,
-        
         lotteryRoles,
         isLogged,
+        windowWidth,
+        currentGameRole,
         currentBet,
+        cartItems,
+        cartTotal,
+        
+        recentsBet,
         logIn,
         updateCurrentTypeGame,
         addBetNumber,
         removeBetNumber,
         clearCurrentBet,
         completeCurrentBet,
-        addToCart
+        addCartItem,
+        removeCartItem
       }}
     >
       {props.children}

@@ -1,3 +1,4 @@
+import { useApp } from "@src/hooks/useapp";
 import { IBet } from "@src/store/interfaces";
 import styled from "styled-components";
 
@@ -44,9 +45,11 @@ const Item = styled.article<{color: string}>`
 `;
 
 const CartItem: React.FC<{ item: IBet }> = (props) => {
+  const {removeCartItem} = useApp()
+  
   return (
     <Item color={props.item.color}>
-      <button><i className="bi bi-trash"/></button>
+      <button onClick={() => removeCartItem(props.item.id)}><i className="bi bi-trash"/></button>
 
       <li>
         <h4>{props.item.bet}</h4>
