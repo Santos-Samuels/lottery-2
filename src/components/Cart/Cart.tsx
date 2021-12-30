@@ -11,7 +11,7 @@ import {
 } from "@src/store/interfaces";
 import { AxiosError } from "axios";
 import React, { useEffect, useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -21,6 +21,7 @@ const Container = styled.div`
   border-radius: 10px;
   width: 100%;
 `;
+
 const SaveButton = styled.button`
   font-size: 30px;
   background-color: #f4f4f4;
@@ -67,6 +68,7 @@ const initialRequestInfo: IRequestInfo<IApiResponseData[], any> = {
 const Cart: React.FC<{ closeModal?: () => void }> = (props) => {
   const { cartTotal, windowWidth, cartItems, lotteryRoles, addRecentsBet, clearCart, updateCurrentTypeGame } = useApp();
   const [requestInfo, setRequestInfo] = useState(initialRequestInfo);
+  const navigate = useNavigate()
 
   const validCart = () => {
     const games: IApiPostGames[] = cartItems.map((item) => {
@@ -130,6 +132,7 @@ const Cart: React.FC<{ closeModal?: () => void }> = (props) => {
 
     if (requestInfo.success) {
       checkOut()
+      navigate('/')
     }
   }, [requestInfo]);
 
