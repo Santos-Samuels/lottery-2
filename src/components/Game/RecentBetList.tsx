@@ -11,9 +11,7 @@ const EmpetyText = styled.h3`
 const RecentBetList: React.FC = () => {
   const {recentsBet, currentGameRole} = useApp()
 
-  if (recentsBet.length === 0) return <EmpetyText>No recent game yet.</EmpetyText>
-
-  if (!recentsBet.some(recentBet => recentBet.type === currentGameRole.type) && currentGameRole.type !== '') return <EmpetyText>No recent {currentGameRole.type} game found.</EmpetyText>
+  if (recentsBet.length === 0 && !recentsBet.some(recentBet => recentBet.type === currentGameRole.type)) return <EmpetyText>No recent {currentGameRole.type} game found.</EmpetyText>
 
   if (currentGameRole.type) {
     return (

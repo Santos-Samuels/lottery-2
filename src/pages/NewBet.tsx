@@ -91,8 +91,6 @@ const NewBet: React.FC = () => {
               <strong>Fill your bet</strong> <br />
               {currentGameRole.description}
             </p>
-
-            <p>{currentBet.length === 0 ? 'void' : JSON.stringify(currentBet)}  {currentBet.length}</p>
           </HeaderContent>
 
           <BallsList />

@@ -1,3 +1,5 @@
+import { AxiosError } from "axios";
+
 export interface IBet {
   id: number;
   type: string;
@@ -22,8 +24,28 @@ export interface ILotteryRoles {
   types: IGameRole[]
 }
 
-export interface IRequestStatus {
+export interface IRequestInfo<T, D> {
   loading: boolean;
-  data: any;
-  error: string
+  data: T;
+  error: D,
+  success: boolean
 }
+
+export interface IApiPostGames {
+  id: number;
+  numbers: number[]
+}
+
+export interface IApiResponseData {
+  choosen_numbers: string
+  user_id: number,
+  game_id: number,
+  price: number,
+  created_at: string,
+  updated_at: string,
+  id: number
+}
+
+// export interface IApiResponseData {
+//   bet: IApiResponseData[]
+// }

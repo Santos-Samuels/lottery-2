@@ -12,6 +12,7 @@ interface IAppContext {
   currentBet: number[]
   cartItems: IBet[];
   cartTotal: number;
+  recentsBet: IBet[];
 
   logIn: () => void;
   updateCurrentTypeGame: (newCurrentTypeGame: IGameRole, isToggleable: boolean) => void;
@@ -21,13 +22,13 @@ interface IAppContext {
   completeCurrentBet: () => void;
   addCartItem: () => void;
   removeCartItem: (id: number) => void;
-
-  recentsBet: IBet[];
+  clearCart: () => void;
+  addRecentsBet: (newRecentsBet: IBet[]) => void;
 }
 
 export const AppContext = React.createContext({} as IAppContext);
 
-const initialGameRole: IGameRole = {id: 0, color: '', description: '', max_number: 0, price: 0, range: 0, type: ''}
+export const initialGameRole: IGameRole = {id: 0, color: '', description: '', max_number: 0, price: 0, range: 0, type: ''}
 const initialBet: number[] = []
 const initialCart: IBet[] = []
 
@@ -98,6 +99,15 @@ export const AppProvider: React.FC = (props) => {
     dispatchCart({type: CartActionsType.REMOVE_ITEM, payload: { id }});
   };
 
+  const clearCart = () => {
+    dispatchCart({type: CartActionsType.CLEAR_CART, payload: {}})
+    setCartTotal(0)
+  }
+
+  const addRecentsBet = (newRecentsBet: IBet[]) => {
+    setRecentsBet(prevRecentsBet => [...prevRecentsBet, ...newRecentsBet])
+  }
+
   useEffect(() => {
     window.addEventListener("resize", () => setWindowWidth(window.innerWidth));
     return () =>
@@ -124,8 +134,8 @@ export const AppProvider: React.FC = (props) => {
         currentBet,
         cartItems,
         cartTotal,
-        
         recentsBet,
+        
         logIn,
         updateCurrentTypeGame,
         addBetNumber,
@@ -133,7 +143,9 @@ export const AppProvider: React.FC = (props) => {
         clearCurrentBet,
         completeCurrentBet,
         addCartItem,
-        removeCartItem
+        removeCartItem,
+        clearCart,
+        addRecentsBet
       }}
     >
       {props.children}

@@ -28,7 +28,7 @@ const Item = styled.article<{ color: string }>`
 const RecentBetItem: React.FC<{recentBet: IBet}> = (props) => {
   return (
     <Item color={props.recentBet.color}>
-      <h4>{props.recentBet.bet}</h4>
+      <h4>{props.recentBet.bet.toString().replace(/,/g, ', ')}</h4>
       <p>
         {props.recentBet.date.getDay()}/{props.recentBet.date.getMonth()}/
         {props.recentBet.date.getFullYear()} - (R$ {props.recentBet.price})

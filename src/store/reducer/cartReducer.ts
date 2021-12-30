@@ -2,7 +2,8 @@ import { IBet } from "../interfaces";
 
 export enum CartActionsType {
   ADD_ITEM = 'ADD_ITEM',
-  REMOVE_ITEM = 'REMOVE_ITEM'
+  REMOVE_ITEM = 'REMOVE_ITEM',
+  CLEAR_CART = 'CLEAR_CART'
 }
 
 interface ReducerBetActions {
@@ -18,6 +19,10 @@ export const cartReducer = (state: IBet[], action: ReducerBetActions) => {
   if (action.type === CartActionsType.REMOVE_ITEM) {
     const updatedCart = state.filter(item => item.id !== action.payload.id!)
     return updatedCart
+  }
+
+  if (action.type === CartActionsType.CLEAR_CART) {
+    return []
   }
 
   return state
