@@ -15,6 +15,7 @@ interface IAppContext {
   recentsBet: IBet[];
 
   logIn: () => void;
+  logOut: () => void;
   updateCurrentTypeGame: (newCurrentTypeGame: IGameRole, isToggleable: boolean) => void;
   addBetNumber: (number: number) => void;
   removeBetNumber: (number: number) => void;
@@ -44,6 +45,10 @@ export const AppProvider: React.FC = (props) => {
 
   const logIn = () => {
     setIsLogged(true)
+  }
+
+  const logOut = () => {
+    setIsLogged(false)
   }
 
   const updateCurrentTypeGame = (
@@ -137,6 +142,7 @@ export const AppProvider: React.FC = (props) => {
         recentsBet,
         
         logIn,
+        logOut,
         updateCurrentTypeGame,
         addBetNumber,
         removeBetNumber,

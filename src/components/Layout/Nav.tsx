@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { Link } from 'react-router-dom'
+import { useApp } from "@src/hooks/useapp";
 
 const Header = styled.header`
   padding: 10px 30px 2px;
@@ -43,6 +44,8 @@ const Nav = styled.nav`
 `
 
 const NavBar: React.FC = () => {
+  const {logOut} = useApp()
+
   return (
     <Header>
       <Logo>
@@ -52,7 +55,7 @@ const NavBar: React.FC = () => {
 
       <Nav>
         <h4><Link to="/" style={{textDecoration: 'none', color: '#707070'}}>Account</Link></h4>
-        <h4><Link to="/" style={{textDecoration: 'none', color: '#707070'}}>Out <i className="bi bi-arrow-right"/></Link></h4>
+        <h4><Link to="/" onClick={logOut} style={{textDecoration: 'none', color: '#707070'}}>Log Out <i className="bi bi-arrow-right"/></Link></h4>
       </Nav>
     </Header>
   );
