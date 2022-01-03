@@ -1,5 +1,6 @@
 import api from "@src/services/api";
-import { IBet, IGameRole, ILotteryRoles } from "@src/store/interfaces";
+import { IBet, IGameRole, ILotteryRoles, Token, User } from "@src/store/interfaces";
+import { AuthActionsType, authReducer } from "@src/store/reducer/authReducer";
 import { BetActionsType, betReducer } from "@src/store/reducer/betReducer";
 import { CartActionsType, cartReducer } from "@src/store/reducer/cartReducer";
 import React, { useEffect, useReducer, useState } from "react";
@@ -14,7 +15,7 @@ interface IAppContext {
   cartTotal: number;
   recentsBet: IBet[];
 
-  logIn: () => void;
+  logIn: (token: Token, user: User) => void;
   logOut: () => void;
   updateCurrentTypeGame: (newCurrentTypeGame: IGameRole, isToggleable: boolean) => void;
   addBetNumber: (number: number) => void;
@@ -30,25 +31,29 @@ interface IAppContext {
 export const AppContext = React.createContext({} as IAppContext);
 
 export const initialGameRole: IGameRole = {id: 0, color: '', description: '', max_number: 0, price: 0, range: 0, type: ''}
+export const initialUser: User = {id: 0, created_at: '', email: '', is_admin: 0, name: '', picture: '', token: '', token_created_at: '', updated_at: ''}
 const initialBet: number[] = []
 const initialCart: IBet[] = []
 
 export const AppProvider: React.FC = (props) => {
   const [lotteryRoles, setLotteryRoles] = useState<ILotteryRoles>({min_cart_value: 0, types: []});
-  const [isLogged, setIsLogged] = useState(false)
+  const [isLogged, dispatchAuth] = useReducer(authReducer, false)
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [currentGameRole, setCurentGameRole] = useState<IGameRole>(initialGameRole);
   const [currentBet, dispatchBet] = useReducer(betReducer, initialBet)
   const [cartItems, dispatchCart] = useReducer(cartReducer, initialCart)
   const [cartTotal, setCartTotal] = useState(0);
   const [recentsBet, setRecentsBet] = useState<IBet[]>([]);
+  const [userInfo, setUserInfo] = useState<User>(initialUser) 
 
-  const logIn = () => {
-    setIsLogged(true)
+  const logIn = (token: Token, user: User) => {
+    dispatchAuth({ type: AuthActionsType.LOGIN, payload: token })
+    setUserInfo(user)
   }
 
   const logOut = () => {
-    setIsLogged(false)
+    dispatchAuth({ type: AuthActionsType.LOGIN })
+    setUserInfo(initialUser)
   }
 
   const updateCurrentTypeGame = (

@@ -1,4 +1,28 @@
-import { AxiosError } from "axios";
+export interface NewUser {
+  id: number;
+  email: string;
+  name: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface User {
+  id: number;
+  email: string;
+  name: string;
+  created_at: string;
+  updated_at: string;
+  is_admin: number;
+  token: string | null;
+  token_created_at: string | null;
+  picture: string | null;
+}
+
+export interface Token {
+  type: string;
+  token: string;
+  expires_at: string;
+}
 
 export interface IBet {
   id: number;
@@ -37,15 +61,16 @@ export interface IApiPostGames {
 }
 
 export interface IApiResponseData {
-  choosen_numbers: string
-  user_id: number,
-  game_id: number,
-  price: number,
-  created_at: string,
-  updated_at: string,
-  id: number
+  choosen_numbers: string;
+  user_id: number;
+  game_id: number;
+  price: number;
+  created_at: string;
+  updated_at: string;
+  id: number;
 }
 
-// export interface IApiResponseData {
-//   bet: IApiResponseData[]
-// }
+export interface ILoginInfo {
+  email: string;
+  password: string
+}
