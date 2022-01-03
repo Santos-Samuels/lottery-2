@@ -1,6 +1,8 @@
-import { AppContainer, TypeButtonList, BallsList, Cart, ActionButtonList, CartModal } from '@components/index'
+import { AppContainer, TypeButtonList, BallsList, Cart, ActionButtonList, CartModal, Loading } from '@components/index'
 import { useApp } from '@src/hooks/useapp';
-import { useState } from 'react';
+import api from '@src/services/api';
+import { ILotteryRoles, IRequestInfo } from '@src/store/interfaces';
+import { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -65,12 +67,32 @@ const Div = styled.div`
   }
 `
 
+const initialRequestInfo: IRequestInfo<any, boolean> = {
+  loading: true,
+  data: null,
+  error: false,
+  success: false
+}
+
 const NewBet: React.FC = () => {
-  const {windowWidth, currentGameRole, currentBet} = useApp()
+  const {windowWidth, currentGameRole, setLotteryRoles, lotteryRoles} = useApp()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const TOKEN = localStorage.getItem('TOKEN') === 'undefined' ? null : localStorage.getItem('TOKEN')
 
+  const [requestInfo, setRequestInfo] = useState<IRequestInfo<any, boolean>>(initialRequestInfo)
+  
+  useEffect(() => {
+    if (lotteryRoles.types.length === 0 && requestInfo.loading) {
+      api.get<ILotteryRoles>('/cart_games').then(response => {
+        setRequestInfo(prevInfo => {return { ...prevInfo, loading: false }})
+        setLotteryRoles(response.data)
+      })
+    }
+  }, [])
+    
   if (!TOKEN) return <Navigate replace to="/login" />;
+  
+  if (requestInfo.loading) return <Loading />
 
   return (
     <AppContainer>

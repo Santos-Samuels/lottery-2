@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { Link, useNavigate } from 'react-router-dom'
 import { useApp } from "@src/hooks/useapp";
-import { useEffect, useState } from "react";
 
 const Header = styled.header`
   padding: 10px 30px 2px;
@@ -45,7 +44,7 @@ const Nav = styled.nav`
 `
 
 const NavBar: React.FC = () => {
-  const {logOut, isLogged} = useApp()
+  const {logOut} = useApp()
   const navigate = useNavigate()
 
   const logoutHandler = () => {

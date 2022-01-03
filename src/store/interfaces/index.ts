@@ -6,7 +6,18 @@ export interface NewUser {
   updated_at: string;
 }
 
+export interface IBet {
+  choosen_numbers: string;
+  user_id: number;
+  game_id: number;
+  price: number;
+  created_at: string;
+  updated_at: string;
+  id: number;
+}
+
 export interface User {
+  bets?: IBet[]
   id: number;
   email: string;
   name: string;
@@ -22,15 +33,6 @@ export interface Token {
   type: string;
   token: string;
   expires_at: string;
-}
-
-export interface IBet {
-  id: number;
-  type: string;
-  color: string;
-  price: number;
-  bet: number[];
-  date: Date;
 }
 
 export interface IGameRole {
@@ -58,16 +60,6 @@ export interface IRequestInfo<T, D> {
 export interface IApiPostGames {
   id: number;
   numbers: number[]
-}
-
-export interface IApiResponseData {
-  choosen_numbers: string;
-  user_id: number;
-  game_id: number;
-  price: number;
-  created_at: string;
-  updated_at: string;
-  id: number;
 }
 
 export interface ILoginInfo {

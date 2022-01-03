@@ -4,9 +4,7 @@ import { useApp } from "@src/hooks/useapp";
 import api from "@src/services/api";
 import {
   IApiPostGames,
-  IApiResponseData,
   IBet,
-  IGameRole,
   IRequestInfo,
 } from "@src/store/interfaces";
 import { AxiosError } from "axios";
@@ -58,7 +56,7 @@ const CartHeader = styled.div`
   }
 `;
 
-const initialRequestInfo: IRequestInfo<IApiResponseData[], any> = {
+const initialRequestInfo: IRequestInfo<IBet[], any> = {
   loading: false,
   data: [],
   error: null,
@@ -66,26 +64,20 @@ const initialRequestInfo: IRequestInfo<IApiResponseData[], any> = {
 };
 
 const Cart: React.FC<{ closeModal?: () => void }> = (props) => {
-  const { cartTotal, windowWidth, cartItems, lotteryRoles, addRecentsBet, clearCart, updateCurrentTypeGame } = useApp();
+  const { cartTotal, windowWidth, cartItems, addRecentsBet, clearCart, updateCurrentTypeGame } = useApp();
   const [requestInfo, setRequestInfo] = useState(initialRequestInfo);
   const navigate = useNavigate()
 
   const validCart = () => {
     const games: IApiPostGames[] = cartItems.map((item) => {
-      const id = lotteryRoles.types.find((role) => {
-        if (role.type === item.type) return role;
-      })!.id;
-
-      const numbers = item.bet;
-
       return {
-        id,
-        numbers,
+        id: item.game_id,
+        numbers: JSON.parse('[' + item.choosen_numbers + ']'),
       };
     });
     try {
       api
-        .post<{ bet: IApiResponseData[] }>("/bet/new-bet", { games })
+        .post<{ bet: IBet[] }>("/bet/new-bet", { games })
         .then((response) =>
           setRequestInfo((prevInfo) => {
             return { ...prevInfo, data: response.data.bet, success: true };
@@ -100,22 +92,7 @@ const Cart: React.FC<{ closeModal?: () => void }> = (props) => {
   };
 
   const checkOut = () => {
-    const newRecentsBet: IBet[] = requestInfo.data.map((item) => {
-      const newRecentBetRole: IGameRole = lotteryRoles.types.find(role => role.id === item.game_id)!
-
-      const aux: IBet = {
-        id: item.id,
-        date: new Date(item.created_at),
-        price: item.price,
-        bet: JSON.parse('['+ item.choosen_numbers + ']'),
-        type: newRecentBetRole.type,
-        color: newRecentBetRole.color
-      };
-
-      return aux
-    });
-    
-    addRecentsBet(newRecentsBet)
+    addRecentsBet(requestInfo.data)
     clearCart()
     updateCurrentTypeGame(initialGameRole, false)
     setRequestInfo(initialRequestInfo);

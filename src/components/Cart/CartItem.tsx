@@ -45,17 +45,18 @@ const Item = styled.article<{color: string}>`
 `;
 
 const CartItem: React.FC<{ item: IBet }> = (props) => {
-  const {removeCartItem} = useApp()
+  const {removeCartItem, getRole} = useApp()
+  const itemRole = getRole(props.item.game_id)
   
   return (
-    <Item color={props.item.color}>
+    <Item color={itemRole.color}>
       <button onClick={() => removeCartItem(props.item.id)}><i className="bi bi-trash"/></button>
 
       <li>
-        <h4>{props.item.bet.toString().replace(/,/g, ', ')}</h4>
+        <h4>{props.item.choosen_numbers.replace(/,/g, ', ')}</h4>
 
         <p>
-          <strong>{props.item.type}</strong>{" "}
+          <strong>{itemRole.type}</strong>{" "}
           <span>
             {props.item.price.toLocaleString("pt-br", {
               style: "currency",

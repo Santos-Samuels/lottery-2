@@ -1,3 +1,4 @@
+import { useApp } from "@src/hooks/useapp";
 import { IBet } from "@src/store/interfaces";
 import styled from "styled-components";
 
@@ -26,14 +27,18 @@ const Item = styled.article<{ color: string }>`
 `;
 
 const RecentBetItem: React.FC<{recentBet: IBet}> = (props) => {
+  const {getRole} = useApp()
+  const itemRole = getRole(props.recentBet.game_id)
+  const itemDate = new Date(props.recentBet.created_at)
+
   return (
-    <Item color={props.recentBet.color}>
-      <h4>{props.recentBet.bet.toString().replace(/,/g, ', ')}</h4>
+    <Item color={itemRole.color}>
+      <h4>{props.recentBet.choosen_numbers.replace(/,/g, ', ')}</h4>
       <p>
-        {props.recentBet.date.getDay()}/{props.recentBet.date.getMonth()}/
-        {props.recentBet.date.getFullYear()} - (R$ {props.recentBet.price})
+        {itemDate.getDay()}/{itemDate.getMonth()}/
+        {itemDate.getFullYear()} - (R$ {props.recentBet.price})
       </p>
-      <span>{props.recentBet.type}</span>
+      <span>{itemRole.type}</span>
     </Item>
   );
 };

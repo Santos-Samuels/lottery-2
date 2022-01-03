@@ -1,5 +1,4 @@
-import api from "@src/services/api";
-import { NewUser, Token, User } from "../interfaces";
+import { Token } from "../interfaces";
 
 export enum AuthActionsType {
   LOGIN = 'LOGIN',
@@ -9,7 +8,6 @@ export enum AuthActionsType {
 interface ReducerAuthActions {
   type: AuthActionsType,
   payload?: Token
-  // payload: { user?: User, newUser?: { user: NewUser, token: Token } }
 }
 
 

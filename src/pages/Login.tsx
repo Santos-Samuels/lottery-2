@@ -2,12 +2,10 @@ import { AuthContent, AuthContainer, Hero } from "@components/index";
 import { useApp } from "@src/hooks/useapp";
 import api from "@src/services/api";
 import { ILoginInfo, IRequestInfo, Token, User } from "@src/store/interfaces";
-import { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form"
 import styled from "styled-components";
-import { log } from "console";
 
 const initialRequestInfo: IRequestInfo<any, boolean> = {
   loading: false,
@@ -64,6 +62,7 @@ const Login: React.FC = () => {
         setRequestInfo(prevInfo => { return { ...prevInfo, error: true } })
       }
     }
+    
   }, [requestInfo])
 
 

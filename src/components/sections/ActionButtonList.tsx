@@ -35,8 +35,8 @@ const ActionButtonList: React.FC = () => {
   return (
     <Container>
       <div>
-        <ActionButton fill={false} actionHandler={completeCurrentBet}>Complete game</ActionButton>
-        <ActionButton fill={false} actionHandler={clearCurrentBet}>Clear game</ActionButton>
+        <ActionButton actionHandler={completeCurrentBet}>Complete game</ActionButton>
+        <ActionButton actionHandler={clearCurrentBet}>Clear game</ActionButton>
       </div>
 
       <ActionButton fill={true} actionHandler={addCartItem}><i className='bi bi-cart3'/> Add to cart</ActionButton>
