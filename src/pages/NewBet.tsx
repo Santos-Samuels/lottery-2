@@ -66,10 +66,11 @@ const Div = styled.div`
 `
 
 const NewBet: React.FC = () => {
-  const {windowWidth, currentGameRole, isLogged, currentBet} = useApp()
+  const {windowWidth, currentGameRole, currentBet} = useApp()
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const TOKEN = localStorage.getItem('TOKEN') === 'undefined' ? null : localStorage.getItem('TOKEN')
 
-  if (!isLogged) return <Navigate replace to="/login" />;
+  if (!TOKEN) return <Navigate replace to="/login" />;
 
   return (
     <AppContainer>

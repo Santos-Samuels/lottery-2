@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form"
 import styled from "styled-components";
+import { log } from "console";
 
 const initialRequestInfo: IRequestInfo<any, boolean> = {
   loading: false,
@@ -27,6 +28,7 @@ const Login: React.FC = () => {
   const [enteredLoginInfo, setEnteredLoginInfo] = useState<ILoginInfo>({ email: '', password: '' })
   const { register, handleSubmit, formState: { errors }} = useForm<ILoginInfo>()
   const navigate = useNavigate()
+  const TOKEN = localStorage.getItem('TOKEN') === 'undefined' ? null : localStorage.getItem('TOKEN')
   
   const loginHandler = (data: ILoginInfo) => {
     console.log(data);
@@ -64,6 +66,9 @@ const Login: React.FC = () => {
     }
   }, [requestInfo])
 
+
+  if (TOKEN)
+    return <Navigate replace to="/" />
 
   return (
     <AuthContainer>

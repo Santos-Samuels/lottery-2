@@ -56,6 +56,7 @@ export const AppProvider: React.FC = (props) => {
     setUserInfo(initialUser)
   }
 
+
   const updateCurrentTypeGame = (
     newCurrentTypeGame: IGameRole,
     isToggleable: boolean

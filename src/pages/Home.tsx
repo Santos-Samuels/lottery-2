@@ -3,9 +3,9 @@ import { useApp } from "@src/hooks/useapp";
 import { Navigate } from "react-router-dom";
 
 const Home: React.FC = () => {
-  const {isLogged} = useApp()
+  const TOKEN = localStorage.getItem('TOKEN') === 'undefined' ? null : localStorage.getItem('TOKEN')
 
-  if (!isLogged) return <Navigate replace to="/login" />;
+  if (!TOKEN) return <Navigate replace to="/login" />;
 
   return (
     <AppContainer>
