@@ -18,7 +18,7 @@ const Home: React.FC = () => {
   const [requestInfo, setRequestInfo] = useState<IRequestInfo<any, boolean>>(initialRequestInfo)
 
   useEffect(() => {
-    if (lotteryRoles.types.length === 0 && requestInfo.loading) {
+    if (requestInfo.loading) {
       api.get<ILotteryRoles>('/cart_games').then(response => {
         setRequestInfo(prevInfo => {return { ...prevInfo, loading: false }})
         setLotteryRoles(response.data)
