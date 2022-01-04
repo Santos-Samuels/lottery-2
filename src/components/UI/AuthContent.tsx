@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const Container = styled.div`
+const Container = styled.div<{isError: boolean}>`
   text-align: center;
 
   & form {
@@ -22,8 +22,13 @@ const Container = styled.div`
     font-style: italic;
     padding: 1.3rem;
     border: none;
-    border-bottom: 1px solid #dddddd;
+    border-bottom: ${props => props.isError ? '3px solid red' : '1px solid #dddddd'};
     background-color: transparent;
+  }
+
+  & input:focus {
+    outline: none;
+    border-bottom: ${props => props.isError ? '3px solid red' : '3px solid #b5c401'};;
   }
 
   & button {
@@ -43,10 +48,10 @@ const Container = styled.div`
 `;
 
 
-const AuthContainer: React.FC = (props) => {
+const AuthContainer: React.FC<{isError?: boolean}> = (props) => {
 
   return (
-      <Container>{props.children}</Container>
+      <Container isError={!props.isError ? false : props.isError}>{props.children}</Container>
   );
 };
 

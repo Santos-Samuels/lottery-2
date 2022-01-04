@@ -29,7 +29,6 @@ const Login: React.FC = () => {
   const TOKEN = localStorage.getItem('TOKEN') === 'undefined' ? null : localStorage.getItem('TOKEN')
   
   const loginHandler = (data: ILoginInfo) => {
-    console.log(data);
     setEnteredLoginInfo({email: data.email, password: data.password})
     
     setRequestInfo(prevInfo => { return { ...prevInfo, loading: true } })
@@ -49,18 +48,15 @@ const Login: React.FC = () => {
 
   useEffect(() => {
     if (requestInfo.loading) {
-      setRequestInfo(prevInfo => { return { ...prevInfo, loading: false } })
+      setRequestInfo(prevInfo => { return { ...prevInfo, loading: false, error: false } })
 
-      try {
-        api.post<{user: User, token: Token}>('/login', enteredLoginInfo).then(response => {
+      api.post<{user: User, token: Token}>('/login', enteredLoginInfo)
+        .then(response => {
           logIn(response.data.token, response.data.user)
           setEnteredLoginInfo({email: '', password: ''})
           navigate('/')
         })
-      }
-      catch(error) {
-        setRequestInfo(prevInfo => { return { ...prevInfo, error: true } })
-      }
+        .catch(error => setRequestInfo(prevInfo => { return { ...prevInfo, error: true } }))
     }
     
   }, [requestInfo])
@@ -73,7 +69,7 @@ const Login: React.FC = () => {
     <AuthContainer>
       <Hero />
       
-      <AuthContent>
+      <AuthContent isError={requestInfo.error}>
         <h2>Authentication</h2>
         
         <form onSubmit={handleSubmit(loginHandler)}>
