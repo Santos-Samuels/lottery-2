@@ -1,10 +1,9 @@
-import { AuthContent, AuthContainer, Hero } from "@components/index";
+import { AuthContent, AuthContainer, Hero, ErrorMessage, InputError } from "@components/index";
 import { initialUser } from "@src/context";
 import api from "@src/services/api";
 import { IRequestInfo, User } from "@src/store/interfaces";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom"
-import styled from "styled-components";
 
 interface IResetPassword {
   email: string;
@@ -25,15 +24,11 @@ const initialEnteredInfo: IResetPassword = {
   confirmPassword: ''
 }
 
-const Error = styled.span`
-  margin-top: 8px;
-  font-size: 13px;
-  color: red;
-`
-
 const Login: React.FC = () => {
   const [requestInfo, setRequestInfo] = useState<IRequestInfo<User, string>>(initialRequestInfo)
-  const [resetInfo, setResetInfo] = useState(initialEnteredInfo)
+  const enteredEmail = useRef<HTMLInputElement>(null)
+  const enteredPassword = useRef<HTMLInputElement>(null)
+  const enteredConfirmPassword = useRef<HTMLInputElement>(null)
   const navigate = useNavigate()
 
   const resetPasswordHandler = (event: React.FormEvent<HTMLFormElement>) => {
@@ -43,7 +38,7 @@ const Login: React.FC = () => {
       return
     }
 
-    if (resetInfo.password === resetInfo.confirmPassword) {
+    if (enteredPassword.current?.value === enteredConfirmPassword.current?.value) {
       setRequestInfo(prevInfo => { return {...prevInfo, loading: true, error: ''} })
       return
     }
@@ -56,7 +51,7 @@ const Login: React.FC = () => {
     if (!requestInfo.success && requestInfo.loading) {
       setRequestInfo(prevInfo => { return {...prevInfo, loading: false} })
       
-      api.post<User>('/reset', { email: resetInfo.email })
+      api.post<User>('/reset', { email: enteredEmail.current?.value })
         .then(response => setRequestInfo(prevInfo => { return {...prevInfo, data: response.data, success: true, error: ''} }))
         .catch(error => setRequestInfo(prevInfo => { return {...prevInfo, error: 'Invalid Email'} }))
 
@@ -66,7 +61,7 @@ const Login: React.FC = () => {
     if (requestInfo.success && requestInfo.loading) {
       setRequestInfo(initialRequestInfo)
       
-      api.post<User>(`/reset/${requestInfo.data.token}`, { password: resetInfo.password })
+      api.post<User>(`/reset/${requestInfo.data.token}`, { password: enteredPassword.current?.value })
         .then(response => {
           setRequestInfo(prevInfo => { return {...prevInfo, data: response.data, success: true, error: ''} })
           navigate('/login')
@@ -84,9 +79,10 @@ const Login: React.FC = () => {
           <h2>Reset password</h2>
           
           <form onSubmit={resetPasswordHandler}>
-            <input type="password" id="userPassword" placeholder="New Password" value={resetInfo.password} onChange={(e) => setResetInfo(prevResetInfo => { return {...prevResetInfo, password: e.target.value} })} required />
-            <input type="password" id="userConfirmPassword" placeholder="Confirm Password" value={resetInfo.confirmPassword} onChange={(e) => setResetInfo(prevResetInfo => { return {...prevResetInfo, confirmPassword: e.target.value} })} required />
-            { requestInfo.error && <Error>{requestInfo.error}</Error> }
+            { requestInfo.error && enteredConfirmPassword.current?.focus() }
+            <InputError isError={requestInfo.error ? true : false} type="password" id="userPassword" placeholder="New Password" ref={enteredPassword} required />
+            <InputError isError={requestInfo.error ? true : false} type="password" id="userConfirmPassword" placeholder="Confirm Password" ref={enteredConfirmPassword} required />
+            { requestInfo.error && <ErrorMessage>{requestInfo.error}</ErrorMessage> }
 
             <button>
               Confirm <i className="bi bi-arrow-right"></i>
@@ -108,9 +104,10 @@ const Login: React.FC = () => {
       <AuthContent>
         <h2>Reset password</h2>
         
-        <form onSubmit={resetPasswordHandler}>
-          <input type="email" id="userEmail" placeholder="Email" value={resetInfo.email} onChange={(e) => setResetInfo(prevResetInfo => { return {...prevResetInfo, email: e.target.value} })} required />
-          { requestInfo.error && <Error>{requestInfo.error}</Error> }
+        <form onSubmit={resetPasswordHandler} >
+          <InputError isError={requestInfo.error ? true : false} type="email" id="userEmail" placeholder="Email" ref={enteredEmail} required />
+          { requestInfo.error && enteredEmail.current?.focus() }
+          { requestInfo.error && <ErrorMessage>{requestInfo.error}</ErrorMessage> }
 
           <button>
             Send link <i className="bi bi-arrow-right"></i>

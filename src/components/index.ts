@@ -20,6 +20,8 @@ import ActionButtonList from "./sections/ActionButtonList"
 import Modal from "./UI/Modal"
 import CartModal from "./Cart/CartModal"
 import Loading from "./UI/Loading"
+import ErrorMessage from "./UI/ErrorMessage"
+import InputError from "./UI/InputError"
 
 
 export const responsiveValue = 'min-width: 820px'
@@ -46,5 +48,7 @@ export {
   ActionButtonList,
   Modal,
   CartModal,
-  Loading
+  Loading,
+  ErrorMessage,
+  InputError
 }

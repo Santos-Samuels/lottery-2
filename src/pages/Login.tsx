@@ -1,11 +1,10 @@
-import { AuthContent, AuthContainer, Hero } from "@components/index";
+import { AuthContent, AuthContainer, Hero, ErrorMessage, InputError } from "@components/index";
 import { useApp } from "@src/hooks/useapp";
 import api from "@src/services/api";
 import { ILoginInfo, IRequestInfo, Token, User } from "@src/store/interfaces";
 import { useEffect, useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form"
-import styled from "styled-components";
 
 const initialRequestInfo: IRequestInfo<any, boolean> = {
   loading: false,
@@ -14,17 +13,12 @@ const initialRequestInfo: IRequestInfo<any, boolean> = {
   success: false
 }
 
-const Error = styled.span`
-  margin-top: 8px;
-  font-size: 13px;
-  color: red;
-`
 
 const Login: React.FC = () => {
   const {logIn} = useApp()
   const [requestInfo, setRequestInfo] = useState<IRequestInfo<any, any>>(initialRequestInfo)
   const [enteredLoginInfo, setEnteredLoginInfo] = useState<ILoginInfo>({ email: '', password: '' })
-  const { register, handleSubmit, formState: { errors }} = useForm<ILoginInfo>()
+  const { register, handleSubmit, formState: { errors }, setFocus} = useForm<ILoginInfo>()
   const navigate = useNavigate()
   const TOKEN = localStorage.getItem('TOKEN') === 'undefined' ? null : localStorage.getItem('TOKEN')
   
@@ -35,11 +29,19 @@ const Login: React.FC = () => {
   }
 
   const errorMessage = () => {
-    if (errors.email && errors.password) return "Invalid email and password"
+    if (errors.email && errors.password) {
+      return "Invalid email and password"
+    }
 
-    if (errors.email) return "Invalid email"
+    if (errors.email) {
+      setFocus("email")
+      return "Invalid email"
+    }
 
-    if (errors.password) return "Invalid password"
+    if (errors.password) {
+      setFocus("password")
+      return "Invalid password"
+    }
 
     if (requestInfo.error) return "Incorret email or password"
 
@@ -73,10 +75,10 @@ const Login: React.FC = () => {
         <h2>Authentication</h2>
         
         <form onSubmit={handleSubmit(loginHandler)}>
-          <input type="email" id="userEmail" placeholder="Email" { ...register("email", { required: true }) } />
-          <input type="password" id="userPassword" autoComplete="on" placeholder="Password" { ...register("password", { required: true }) } />
+          <InputError isError={errors.email ? true : false} type="email" id="userEmail" placeholder="Email" { ...register("email", { required: true }) } />
+          <InputError isError={errors.password ? true : false} type="password" id="userPassword" autoComplete="on" placeholder="Password" { ...register("password", { required: true }) } />
 
-          <Error>{ errorMessage() }</Error>
+          <ErrorMessage>{ errorMessage() }</ErrorMessage>
 
           <Link
             to="/reset-password"

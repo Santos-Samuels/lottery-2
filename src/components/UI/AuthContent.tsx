@@ -22,13 +22,8 @@ const Container = styled.div<{isError: boolean}>`
     font-style: italic;
     padding: 1.3rem;
     border: none;
-    border-bottom: ${props => props.isError ? '3px solid red' : '1px solid #dddddd'};
+    border-bottom: 1px solid #dddddd;
     background-color: transparent;
-  }
-
-  & input:focus {
-    outline: none;
-    border-bottom: ${props => props.isError ? '3px solid red' : '3px solid #b5c401'};;
   }
 
   & button {
