@@ -18,7 +18,7 @@ const Login: React.FC = () => {
   const {logIn} = useApp()
   const [requestInfo, setRequestInfo] = useState<IRequestInfo<any, any>>(initialRequestInfo)
   const [enteredLoginInfo, setEnteredLoginInfo] = useState<ILoginInfo>({ email: '', password: '' })
-  const { register, handleSubmit, formState: { errors }, setFocus} = useForm<ILoginInfo>()
+  const { register, handleSubmit, formState: { errors }, setFocus, reset} = useForm<ILoginInfo>()
   const navigate = useNavigate()
   const TOKEN = localStorage.getItem('TOKEN') === 'undefined' ? null : localStorage.getItem('TOKEN')
   
@@ -26,6 +26,7 @@ const Login: React.FC = () => {
     setEnteredLoginInfo({email: data.email, password: data.password})
     
     setRequestInfo(prevInfo => { return { ...prevInfo, loading: true } })
+    reset(data)
   }
 
   const errorMessage = () => {
