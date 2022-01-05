@@ -10,10 +10,6 @@ const Container = styled.div`
     color: #868686;
     margin-right: 15px;
   }
-
-  @media (min-width: 820px) {
-    
-  }
 `
 
 const Filter: React.FC = () => {

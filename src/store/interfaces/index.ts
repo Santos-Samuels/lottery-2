@@ -66,3 +66,10 @@ export interface ILoginInfo {
   email: string;
   password: string
 }
+
+export interface IBetError{
+  isError: boolean;
+  message: string;
+  icon: string;
+  color: string;
+}

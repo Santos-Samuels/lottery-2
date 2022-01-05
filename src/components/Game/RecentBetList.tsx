@@ -21,6 +21,7 @@ const initialRequestInfo: IRequestInfo<IBet[], boolean> = {
 const RecentBetList: React.FC = () => {
   const {recentsBet, addRecentsBet, currentGameRole, getRole} = useApp()
   const [requestInfo, setRequestInfo] = useState<IRequestInfo<IBet[], boolean>>(initialRequestInfo)
+  const [totalItems, setTotalItems] = useState(recentsBet.length)
 
   useEffect(() => {
     try {
@@ -28,6 +29,7 @@ const RecentBetList: React.FC = () => {
         if (response.data.bets) {
           setRequestInfo(prevInfo => { return { ...prevInfo, loading: false } })
           addRecentsBet(response.data.bets)
+          setTotalItems(response.data.bets.length)
         }
       })
     } catch (error) {
@@ -40,8 +42,12 @@ const RecentBetList: React.FC = () => {
   if (recentsBet.length === 0 && !recentsBet.some(recentBet => getRole(recentBet.game_id).type === currentGameRole.type)) return <InfoText>No recent {currentGameRole.type} game found.</InfoText>
 
   if (currentGameRole.type) {
+    let count = 0
+    recentsBet.forEach(item => getRole(item.game_id).type === currentGameRole.type && count++)
+    
     return (
       <>
+        <p>Total items: {count}</p>
         { recentsBet.map(recentBet => getRole(recentBet.game_id).type === currentGameRole.type && <RecentBetItem key={recentBet.id} recentBet={recentBet} />) }
       </>
     )
@@ -49,6 +55,7 @@ const RecentBetList: React.FC = () => {
 
   return (
     <>
+    <p>Total items: {totalItems}</p>
       { recentsBet.map(recentBet => <RecentBetItem key={recentBet.id} recentBet={recentBet} />) }
     </>
   );

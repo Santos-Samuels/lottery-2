@@ -1,6 +1,5 @@
 import { Filter } from '@components/index'
 import { useApp } from '@src/hooks/useapp';
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from 'styled-components';
 

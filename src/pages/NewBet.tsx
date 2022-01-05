@@ -1,4 +1,4 @@
-import { AppContainer, TypeButtonList, BallsList, Cart, ActionButtonList, CartModal, Loading } from '@components/index'
+import { AppContainer, TypeButtonList, BallsList, Cart, ActionButtonList, CartModal, Loading, FeedbackMessage } from '@components/index'
 import { useApp } from '@src/hooks/useapp';
 import api from '@src/services/api';
 import { ILotteryRoles, IRequestInfo } from '@src/store/interfaces';
@@ -75,7 +75,7 @@ const initialRequestInfo: IRequestInfo<any, boolean> = {
 }
 
 const NewBet: React.FC = () => {
-  const {windowWidth, currentGameRole, setLotteryRoles, lotteryRoles} = useApp()
+  const {windowWidth, currentGameRole, setLotteryRoles} = useApp()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const TOKEN = localStorage.getItem('TOKEN') === 'undefined' ? null : localStorage.getItem('TOKEN')
 
@@ -125,6 +125,8 @@ const NewBet: React.FC = () => {
           {windowWidth >= 950 ? <Cart /> : <CartModal isOpen={isModalOpen} closeModalHandler={() => setIsModalOpen(!isModalOpen)} />}
         </section>
       </Content>
+      
+      <FeedbackMessage />
     </AppContainer>
   );
 };

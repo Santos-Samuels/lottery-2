@@ -30,7 +30,7 @@ const Ball: React.FC<IProps> = (props) => {
   const {currentGameRole, currentBet, addBetNumber, removeBetNumber} = useApp()
 
   const onClickHandler = () => {
-    if (currentBet.length < currentGameRole.max_number && !isActive) {
+    if (!isActive) {
       addBetNumber(props.number)
       return
     }

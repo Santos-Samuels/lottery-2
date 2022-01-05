@@ -22,7 +22,7 @@ import CartModal from "./Cart/CartModal"
 import Loading from "./UI/Loading"
 import ErrorMessage from "./UI/ErrorMessage"
 import InputError from "./UI/InputError"
-
+import FeedbackMessage from "./UI/Feedback"
 
 export const responsiveValue = 'min-width: 820px'
 
@@ -50,5 +50,6 @@ export {
   CartModal,
   Loading,
   ErrorMessage,
-  InputError
+  InputError,
+  FeedbackMessage
 }

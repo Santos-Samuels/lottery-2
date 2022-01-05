@@ -1,4 +1,5 @@
 import { RecentBetList, AppContainer, HeaderRecentGame, Loading } from "@components/index";
+import { initialGameRole } from "@src/context";
 import { useApp } from "@src/hooks/useapp";
 import api from "@src/services/api";
 import { ILotteryRoles, IRequestInfo } from "@src/store/interfaces";
@@ -13,11 +14,13 @@ const initialRequestInfo: IRequestInfo<any, boolean> = {
 }
 
 const Home: React.FC = () => {
-  const {lotteryRoles, setLotteryRoles} = useApp()
+  const {setLotteryRoles, updateCurrentTypeGame} = useApp()
   const TOKEN = localStorage.getItem('TOKEN') === 'undefined' ? null : localStorage.getItem('TOKEN')
   const [requestInfo, setRequestInfo] = useState<IRequestInfo<any, boolean>>(initialRequestInfo)
 
   useEffect(() => {
+    updateCurrentTypeGame(initialGameRole, false)
+
     if (requestInfo.loading) {
       api.get<ILotteryRoles>('/cart_games').then(response => {
         setRequestInfo(prevInfo => {return { ...prevInfo, loading: false }})
