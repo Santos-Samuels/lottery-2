@@ -65,7 +65,7 @@ const Cart: React.FC<{ closeModal?: () => void }> = (props) => {
   const [requestInfo, setRequestInfo] = useState(initialRequestInfo);
 
   const validCart = () => {
-    if (cartTotal >= 30 && cartItems.length > 0) {
+    if (cartTotal >= lotteryRoles.min_cart_value && cartItems.length > 0) {
       setRequestInfo(prevInfo => {return { ...prevInfo, loading: true }})
       return
     }
@@ -75,7 +75,7 @@ const Cart: React.FC<{ closeModal?: () => void }> = (props) => {
       return
     }
     
-    setBetError({isError: true, message: 'You need at least R$ 30 in your cart', icon: 'x', color: '#ee5754'})
+    setBetError({isError: true, message: `You need at least R$ ${lotteryRoles.min_cart_value} in your cart`, icon: 'x', color: '#ee5754'})
   };
 
   const successHandler = () => {
