@@ -4,7 +4,7 @@ import { Nav, Footer } from "@components/index";
 const Container = styled.div`
   & main {
     margin: 20px 30px;
-    min-height: calc(100vh - 177px);
+    min-height: calc(100vh - 200px);
   }
 
   @media (min-width: 1000px) {

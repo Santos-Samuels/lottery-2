@@ -38,8 +38,8 @@ const Nav = styled.nav`
   display: flex;
   align-items: center;
   
-  & h4:first-child {
-    margin-right: 30px;
+  & h4 {
+    margin-left: 20px;
   }
 `
 
@@ -60,9 +60,9 @@ const NavBar: React.FC = () => {
       </Logo>
 
       <Nav>
-        <h4><Link to="/" style={{textDecoration: 'none', color: '#707070'}}>Account</Link></h4>
+        <h4><Link to="/" style={{textDecoration: 'none', color: '#707070'}}>Home</Link></h4>
+        <h4><Link to="/account" style={{textDecoration: 'none', color: '#707070'}}>Account</Link></h4>
         <h4 onClick={logoutHandler} style={{textDecoration: 'none', color: '#707070', cursor: 'pointer'}}>Log Out <i className="bi bi-arrow-right"/></h4>
-        {/* <h4><Link to="/" onClick={logoutHandler} style={{textDecoration: 'none', color: '#707070'}}>Log Out <i className="bi bi-arrow-right"/></Link></h4> */}
       </Nav>
     </Header>
   );
