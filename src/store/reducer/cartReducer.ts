@@ -1,4 +1,4 @@
-import { IBet } from "../interfaces";
+import { IBet } from "../../shared/interfaces";
 
 export enum CartActionsType {
   ADD_ITEM = 'ADD_ITEM',

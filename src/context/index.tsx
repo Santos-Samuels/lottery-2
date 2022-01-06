@@ -1,4 +1,4 @@
-import { IBet, IBetError, IGameRole, ILotteryRoles, Token, User } from "@src/store/interfaces";
+import { IBet, IBetError, IGameRole, ILotteryRoles, Token, User } from "@src/shared/interfaces";
 import { AuthActionsType, authReducer } from "@src/store/reducer/authReducer";
 import { BetActionsType, betReducer } from "@src/store/reducer/betReducer";
 import { CartActionsType, cartReducer } from "@src/store/reducer/cartReducer";
@@ -16,7 +16,7 @@ interface IAppContext {
   betError: IBetError;
 
   setLotteryRoles: (roles: ILotteryRoles) => void;
-  logIn: (token: Token, user: User) => void;
+  logIn: (data: {token: Token, user: User}) => void;
   logOut: () => void;
   updateCurrentTypeGame: (newCurrentTypeGame: IGameRole, isToggleable: boolean) => void;
   getRole: (gameId: number) => IGameRole
@@ -51,9 +51,9 @@ export const AppProvider: React.FC = (props) => {
   const [userInfo, setUserInfo] = useState<User>(initialUser)
   const [betError, setBetError] = useState<IBetError>(initialBetError);
 
-  const logIn = (token: Token, user: User) => {
-    dispatchAuth({ type: AuthActionsType.LOGIN, payload: token })
-    setUserInfo(user)
+  const logIn = (data: {token: Token, user: User}) => {
+    dispatchAuth({ type: AuthActionsType.LOGIN, payload: data.token })
+    setUserInfo(data.user)
   }
 
   const logOut = () => {

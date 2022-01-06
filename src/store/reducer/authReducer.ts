@@ -1,4 +1,4 @@
-import { Token } from "../interfaces";
+import { Token } from "../../shared/interfaces";
 
 export enum AuthActionsType {
   LOGIN = 'LOGIN',

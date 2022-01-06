@@ -4,6 +4,7 @@ import ResetPassword from"./ResetPassword"
 import Home from"./Home"
 import NewBet from "./NewBet";
 import Account from "./Account";
+import NotFound from "./NotFound";
 
 export {
   Login,
@@ -11,5 +12,6 @@ export {
   ResetPassword,
   Home,
   NewBet,
-  Account
+  Account,
+  NotFound
 }

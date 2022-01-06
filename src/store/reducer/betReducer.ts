@@ -1,5 +1,5 @@
 import { useApp } from "@src/hooks/useapp"
-import { IBet, IGameRole } from "../interfaces"
+import { IBet, IGameRole } from "../../shared/interfaces"
 
 export enum BetActionsType {
   ADD_NUMBER = 'ADD_NUMBER',
