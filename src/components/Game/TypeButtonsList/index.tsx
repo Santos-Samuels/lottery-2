@@ -7,7 +7,7 @@ const TypeButtonList: React.FC<{isToggleable: boolean}> = (props) => {
   
   useEffect(() => {
     if (lotteryRoles.types.length !== 0) {
-      if (!props.isToggleable) updateCurrentTypeGame(lotteryRoles.types[0], false)
+      if (!props.isToggleable) updateCurrentTypeGame(lotteryRoles.types[0])
     }
   }, [lotteryRoles])
 

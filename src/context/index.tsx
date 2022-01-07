@@ -14,11 +14,12 @@ interface IAppContext {
   cartTotal: number;
   recentsBet: IBet[];
   betError: IBetError;
+  filters: string[]
 
   setLotteryRoles: (roles: ILotteryRoles) => void;
   logIn: (data: {token: Token, user: User}) => void;
   logOut: () => void;
-  updateCurrentTypeGame: (newCurrentTypeGame: IGameRole, isToggleable: boolean) => void;
+  updateCurrentTypeGame: (newCurrentTypeGame: IGameRole) => void;
   getRole: (gameId: number) => IGameRole
   addBetNumber: (number: number) => void;
   removeBetNumber: (number: number) => void;
@@ -29,6 +30,7 @@ interface IAppContext {
   clearCart: () => void;
   addRecentsBet: (newRecentsBet: IBet[]) => void;
   setBetError: (error: IBetError) => void
+  updateFilters: (operationType: string, gameType: string) => void
 }
 
 export const AppContext = React.createContext({} as IAppContext);
@@ -50,6 +52,7 @@ export const AppProvider: React.FC = (props) => {
   const [recentsBet, setRecentsBet] = useState<IBet[]>([]);
   const [userInfo, setUserInfo] = useState<User>(initialUser)
   const [betError, setBetError] = useState<IBetError>(initialBetError);
+  const [filters, setFilters] = useState<string[]>([])
 
   const logIn = (data: {token: Token, user: User}) => {
     dispatchAuth({ type: AuthActionsType.LOGIN, payload: data.token })
@@ -61,12 +64,21 @@ export const AppProvider: React.FC = (props) => {
     setUserInfo(initialUser)
   }
 
-  const updateCurrentTypeGame = (newCurrentTypeGame: IGameRole, isToggleable: boolean) => {
-    if (currentGameRole.type === newCurrentTypeGame.type && isToggleable) {
-      setCurentGameRole(initialGameRole);
+  const updateFilters = (operationType: string, gameType: string) => {
+    if (operationType == 'add') {
+      const newFilters = filters.concat(gameType)
+      setFilters(newFilters);
       return;
     }
 
+    if (operationType == 'remove') {
+      const newFilters = filters.filter(filter => filter !== gameType)
+      setFilters(newFilters);
+      return;
+    }
+  }
+
+  const updateCurrentTypeGame = (newCurrentTypeGame: IGameRole) => {
     setCurentGameRole(newCurrentTypeGame);
     dispatchBet({ type: BetActionsType.CLEAR_GAME, payload: { number: 0 }})
   };
@@ -153,6 +165,7 @@ export const AppProvider: React.FC = (props) => {
         cartTotal,
         recentsBet,
         betError,
+        filters,
         
         setLotteryRoles,
         logIn,
@@ -167,7 +180,8 @@ export const AppProvider: React.FC = (props) => {
         removeCartItem,
         clearCart,
         addRecentsBet,
-        setBetError
+        setBetError,
+        updateFilters
       }}
     >
       {props.children}

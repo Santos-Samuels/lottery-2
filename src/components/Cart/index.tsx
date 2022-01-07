@@ -1,9 +1,10 @@
 import { CartList } from "@components/index";
 import { useApp } from "@src/hooks/useapp";
-import api from "@src/shared/services/api";
 import { IApiPostGames, IBet, IRequestInfo } from "@src/shared/interfaces";
 import React, { useEffect, useState } from "react";
 import { CartHeader, CartTitle, Container, SaveButton } from "./style";
+import { useNavigate } from "react-router-dom";
+import { NewBets } from "@src/shared/services";
 
 const initialRequestInfo: IRequestInfo<IBet[], any> = {
   loading: false,
@@ -15,6 +16,7 @@ const initialRequestInfo: IRequestInfo<IBet[], any> = {
 const Cart: React.FC<{ closeModal?: () => void }> = (props) => {
   const { cartTotal, windowWidth, cartItems, addRecentsBet, clearCart, updateCurrentTypeGame, setBetError, lotteryRoles } = useApp();
   const [requestInfo, setRequestInfo] = useState(initialRequestInfo);
+  const navigate = useNavigate()
 
   const validCart = () => {
     if (cartTotal >= lotteryRoles.min_cart_value && cartItems.length > 0) {
@@ -34,32 +36,35 @@ const Cart: React.FC<{ closeModal?: () => void }> = (props) => {
     addRecentsBet(requestInfo.data)
     clearCart()
     setRequestInfo(initialRequestInfo);
-    updateCurrentTypeGame(lotteryRoles.types[0], true)
+    updateCurrentTypeGame(lotteryRoles.types[0])
     setBetError({isError: true, message: 'Successful purchase', icon: 'check', color: '#34aa44'})
+  }
+
+  const fetchNewGames = async () => {
+    const games: IApiPostGames[] = cartItems.map((item) => {
+      return {
+        id: item.game_id,
+        numbers: JSON.parse('[' + item.choosen_numbers + ']'),
+      };
+    });
+    
+    const response = await NewBets(games)
+
+    if (response) {
+      setRequestInfo((prevInfo) => {return { ...prevInfo, data: response as IBet[], success: true }})
+    }
   }
 
 
   useEffect(() => {
     if (requestInfo.loading) {
       setRequestInfo(prevInfo => {return { ...prevInfo, loading: false }})
-
-      const games: IApiPostGames[] = cartItems.map((item) => {
-        return {
-          id: item.game_id,
-          numbers: JSON.parse('[' + item.choosen_numbers + ']'),
-        };
-      });
-  
-      api.post<{ bet: IBet[] }>("/bet/new-bet", { games })
-        .then((response) =>
-          setRequestInfo((prevInfo) => {
-            return { ...prevInfo, data: response.data.bet, success: true };
-          })
-      );
+      fetchNewGames()
     }
 
     if (requestInfo.success) {
       successHandler()
+      navigate('/')
     }
   }, [requestInfo]);
 
@@ -84,9 +89,7 @@ const Cart: React.FC<{ closeModal?: () => void }> = (props) => {
         })}
       </CartTitle>
 
-      <SaveButton
-        onClick={validCart}
-      >
+      <SaveButton onClick={validCart}>
         Save <i className="bi bi-arrow-right" />
       </SaveButton>
     </Container>

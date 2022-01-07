@@ -1,9 +1,8 @@
 import { RecentBetList, AppContainer, HeaderRecentGame, Loading } from "@components/index";
-import { initialGameRole } from "@src/context";
 import { useApp } from "@src/hooks/useapp";
-import api from "@src/shared/services/api";
 import { ILotteryRoles, IRequestInfo } from "@src/shared/interfaces";
 import { useEffect, useState } from "react";
+import { ListGames } from "@src/shared/services";
 
 const initialRequestInfo: IRequestInfo<any, boolean> = {
   loading: true,
@@ -13,17 +12,22 @@ const initialRequestInfo: IRequestInfo<any, boolean> = {
 }
 
 const Home: React.FC = () => {
-  const {setLotteryRoles, updateCurrentTypeGame} = useApp()
+  const {setLotteryRoles, updateFilters} = useApp()
   const [requestInfo, setRequestInfo] = useState<IRequestInfo<any, boolean>>(initialRequestInfo)
 
+  const fetchLotteryRoles = async () => {
+    const response = await ListGames()
+
+    if (response)
+      setLotteryRoles(response as ILotteryRoles)
+  }
+
   useEffect(() => {
-    updateCurrentTypeGame(initialGameRole, false)
+    updateFilters('', '')
 
     if (requestInfo.loading) {
-      api.get<ILotteryRoles>('/cart_games').then(response => {
-        setRequestInfo(prevInfo => {return { ...prevInfo, loading: false }})
-        setLotteryRoles(response.data)
-      })
+      setRequestInfo(prevInfo => { return { ...prevInfo, loading: false } })
+      fetchLotteryRoles()
     }
   }, [])
 
