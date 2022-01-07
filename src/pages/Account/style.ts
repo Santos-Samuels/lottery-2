@@ -60,6 +60,20 @@ export const Content = styled.div`
     border-radius: 7px;
   }
 
+  & button {
+    background-color: #B5C401;
+    color: #FFFFFF;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  & button:hover {
+    background-color: #c6d604;
+  }
+
   @media (min-width: 950px) {
     width: 50%;
   }

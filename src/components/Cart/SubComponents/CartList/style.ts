@@ -4,7 +4,7 @@ export const Container = styled.div<{scrollType: string}>`
   margin: 0 15px;
   
   & div {
-    max-height: 240px;
+    max-height: 230px;
     overflow-y: ${props => props.scrollType};
   }
 

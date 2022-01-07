@@ -5,7 +5,7 @@ export const HeaderContent = styled.header`
 
   & p:first-child {
     text-transform: uppercase;
-    font-size: 20px;
+    font-size: 18px;
   }
 
   & div {
@@ -21,6 +21,12 @@ export const HeaderContent = styled.header`
 
     & div {
       margin: 30px 0;
+    }
+  }
+
+  @media (min-width: 700px) {
+    & p:first-child {
+      font-size: 22px;
     }
   }
 `

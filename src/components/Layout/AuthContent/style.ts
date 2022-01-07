@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const Container = styled.div<{isError: boolean}>`
   text-align: center;
+  margin: 0 15px;
 
   & form {
     background-color: #ffffff;
@@ -11,7 +12,7 @@ export const Container = styled.div<{isError: boolean}>`
 
     display: flex;
     flex-direction: column;
-    width: 360px;
+    max-width: 360px;
     margin: 25px auto;
   }
 

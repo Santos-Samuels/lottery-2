@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
 export const Button = styled.button<{color: string, active: boolean}>`
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   border: none;
   background-color: ${props => props.active ? props.color : '#ADC0C4'};
@@ -16,5 +16,10 @@ export const Button = styled.button<{color: string, active: boolean}>`
 
   &:hover {
     background-color: ${props => props.active ? props.color : '#868686'};
+  }
+
+  @media (min-width: 700px) {
+    width: 60px;
+    height: 60px;
   }
 `
