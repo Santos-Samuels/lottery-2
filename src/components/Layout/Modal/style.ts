@@ -6,4 +6,5 @@ export const Overlays = styled.div`
   height: 100%;
   position: fixed;
   top: 0;
+  padding: 0 15px;
 `
