@@ -8,19 +8,19 @@ interface IAppContext {
   lotteryRoles: ILotteryRoles,
   isLogged: boolean;
   windowWidth: number;
-  currentGameRole: IGameRole;
+  currentGameId: number;
   currentBet: number[]
   cartItems: IBet[];
   cartTotal: number;
   recentsBet: IBet[];
   betError: IBetError;
-  filters: string[]
+  filters: number[]
 
   setLotteryRoles: (roles: ILotteryRoles) => void;
   logIn: (data: {token: Token, user: User}) => void;
   logOut: () => void;
-  updateCurrentTypeGame: (newCurrentTypeGame: IGameRole) => void;
-  getRole: (gameId: number) => IGameRole
+  updateCurrentTypeGame: (newCurrentGameId: number) => void;
+  getRoleById: (gameId: number) => IGameRole
   addBetNumber: (number: number) => void;
   removeBetNumber: (number: number) => void;
   clearCurrentBet: () => void;
@@ -30,7 +30,7 @@ interface IAppContext {
   clearCart: () => void;
   addRecentsBet: (newRecentsBet: IBet[]) => void;
   setBetError: (error: IBetError) => void
-  updateFilters: (operationType: string, gameType: string) => void
+  updateFilters: (operationType: string, game_id: number) => void
 }
 
 export const AppContext = React.createContext({} as IAppContext);
@@ -45,14 +45,14 @@ export const AppProvider: React.FC = (props) => {
   const [lotteryRoles, setLotteryRoles] = useState<ILotteryRoles>({min_cart_value: 0, types: []});
   const [isLogged, dispatchAuth] = useReducer(authReducer, false)
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const [currentGameRole, setCurentGameRole] = useState<IGameRole>(initialGameRole);
+  const [currentGameId, setCurentGameId] = useState<number>(0);
   const [currentBet, dispatchBet] = useReducer(betReducer, initialBet)
   const [cartItems, dispatchCart] = useReducer(cartReducer, initialCart)
   const [cartTotal, setCartTotal] = useState(0);
   const [recentsBet, setRecentsBet] = useState<IBet[]>([]);
   const [userInfo, setUserInfo] = useState<User>(initialUser)
   const [betError, setBetError] = useState<IBetError>(initialBetError);
-  const [filters, setFilters] = useState<string[]>([])
+  const [filters, setFilters] = useState<number[]>([])
 
   const logIn = (data: {token: Token, user: User}) => {
     dispatchAuth({ type: AuthActionsType.LOGIN, payload: data.token })
@@ -64,31 +64,31 @@ export const AppProvider: React.FC = (props) => {
     setUserInfo(initialUser)
   }
 
-  const updateFilters = (operationType: string, gameType: string) => {
-    if (operationType == 'add') {
-      const newFilters = filters.concat(gameType)
+  const updateFilters = (operationType: string, game_id: number) => {
+    if (operationType === 'add') {
+      const newFilters = filters.concat(game_id)
       setFilters(newFilters);
       return;
     }
 
-    if (operationType == 'remove') {
-      const newFilters = filters.filter(filter => filter !== gameType)
+    if (operationType === 'remove') {
+      const newFilters = filters.filter(filter => filter !== game_id)
       setFilters(newFilters);
       return;
     }
   }
 
-  const updateCurrentTypeGame = (newCurrentTypeGame: IGameRole) => {
-    setCurentGameRole(newCurrentTypeGame);
+  const updateCurrentTypeGame = (newCurrentGameId: number) => {
+    setCurentGameId(newCurrentGameId);
     dispatchBet({ type: BetActionsType.CLEAR_GAME, payload: { number: 0 }})
   };
 
-  const getRole = (gameId: number) => {
+  const getRoleById = (gameId: number) => {
     return lotteryRoles.types.find(role => role.id === gameId)!
   }
   
   const addBetNumber = (number: number) => {
-    if (currentBet.length < currentGameRole.max_number) {
+    if (currentBet.length < getRoleById(currentGameId).max_number) {
       dispatchBet({ type: BetActionsType.ADD_NUMBER, payload: { number } })
       return
     }
@@ -107,13 +107,13 @@ export const AppProvider: React.FC = (props) => {
   }
   
   const completeCurrentBet = () => {
-    dispatchBet({ type: BetActionsType.COMPLETE_GAME, payload: { number: 0, currentRole: currentGameRole }})
+    dispatchBet({ type: BetActionsType.COMPLETE_GAME, payload: { number: 0, currentRole: getRoleById(currentGameId) }})
   }
 
   const addCartItem = () => {
     const sortedNewItem = currentBet.sort((a: number, b: number) => a - b)
-    if(currentBet.length === currentGameRole.max_number && !cartItems.some(item => item.choosen_numbers === sortedNewItem.toLocaleString())) {
-      const newCartItem: IBet = { id: Date.now(), choosen_numbers: sortedNewItem.toLocaleString(), created_at: new Date().toJSON(), updated_at: new Date().toJSON(), game_id: currentGameRole.id, price: currentGameRole.price, user_id: userInfo.id }
+    if(currentBet.length === getRoleById(currentGameId).max_number && !cartItems.some(item => item.choosen_numbers === sortedNewItem.toLocaleString())) {
+      const newCartItem: IBet = { id: Date.now(), choosen_numbers: sortedNewItem.toLocaleString(), created_at: new Date().toJSON(), updated_at: new Date().toJSON(), game_id: getRoleById(currentGameId).id, price: getRoleById(currentGameId).price, user_id: userInfo.id }
 
       setCartTotal(prevTotal => prevTotal + newCartItem.price)
       dispatchCart({type: CartActionsType.ADD_ITEM, payload: { newCartItem }});
@@ -126,7 +126,7 @@ export const AppProvider: React.FC = (props) => {
       return
     }
     
-    setBetError({isError: true, message: `You need ${currentGameRole.max_number - currentBet.length} numbers to fill your bet`, icon: 'exclamation', color: '#f6ab2f'})
+    setBetError({isError: true, message: `You need ${getRoleById(currentGameId).max_number - currentBet.length} numbers to fill your bet`, icon: 'exclamation', color: '#f6ab2f'})
   };
 
   const removeCartItem = (id : number) => {
@@ -159,7 +159,7 @@ export const AppProvider: React.FC = (props) => {
         lotteryRoles,
         isLogged,
         windowWidth,
-        currentGameRole,
+        currentGameId,
         currentBet,
         cartItems,
         cartTotal,
@@ -171,7 +171,7 @@ export const AppProvider: React.FC = (props) => {
         logIn,
         logOut,
         updateCurrentTypeGame,
-        getRole,
+        getRoleById,
         addBetNumber,
         removeBetNumber,
         clearCurrentBet,

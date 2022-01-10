@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import { Login, Register, ResetPassword, Home, NewBet, Account, NotFound } from "./index";
+import { Login, Register, ResetPassword, Home, NewBet, Account, NotFound } from "@src/pages";
 import '../index.css'
 import PrivateRoute from '@src/routes/PrivateRoute';
 

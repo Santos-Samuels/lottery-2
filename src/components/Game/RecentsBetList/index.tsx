@@ -1,6 +1,6 @@
 import { RecentBetItem }  from "@components/index"
 import { useApp } from "@src/hooks/useapp";
-import { IBet, IRequestInfo, User } from "@src/shared/interfaces";
+import { IBet, IRequestInfo } from "@src/shared/interfaces";
 import { useEffect, useState } from "react";
 import { InfoText } from "./style";
 import { ListBets } from "@src/shared/services";
@@ -14,12 +14,14 @@ export const initialRequestInfo: IRequestInfo<IBet[], boolean> = {
 }
 
 const RecentBetList: React.FC = () => {
-  const {recentsBet, addRecentsBet, currentGameRole, getRole, filters} = useApp()
+  const {recentsBet, addRecentsBet, currentGameId, getRoleById, filters} = useApp()
   const [requestInfo, setRequestInfo] = useState<IRequestInfo<IBet[], boolean>>(initialRequestInfo)
   const [totalItems, setTotalItems] = useState(recentsBet.length)
 
   const fetchRecentsGame = async () => {
-    let formattedFilter = await formatFiltersToAPI(filters)
+    const filtteredGamesType = filters.map(filter => getRoleById(filter).type)
+    console.log(filtteredGamesType)
+    let formattedFilter = await formatFiltersToAPI(filtteredGamesType)
     const response = await ListBets(formattedFilter)
 
     if (response) {
@@ -36,7 +38,7 @@ const RecentBetList: React.FC = () => {
 
   if (requestInfo.loading) return <InfoText>Loading...</InfoText>
 
-  if (recentsBet.length === 0 && !recentsBet.some(recentBet => getRole(recentBet.game_id).type === currentGameRole.type)) return <InfoText>No recent {currentGameRole.type} game found.</InfoText>
+  if (recentsBet.length === 0 && !recentsBet.some(recentBet => getRoleById(recentBet.game_id).type === getRoleById(currentGameId).type)) return <InfoText>No recent {getRoleById(currentGameId).type} game found.</InfoText>
 
   return (
     <>

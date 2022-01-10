@@ -5,20 +5,20 @@ import { Container } from "./style";
 
 
 const BallsList: React.FC = () => {
-  const {currentGameRole} = useApp()
+  const {currentGameId, getRoleById} = useApp()
   const [ballsNumber, setBallsNumber] = useState<number[]>([])
 
   useEffect(() => {
     let numbers: number[] = []
 
-    for (let i = 1; i <= currentGameRole.range; i++) {
+    for (let i = 1; i <= getRoleById(currentGameId).range; i++) {
       numbers.push(i)
   
-      if (i === currentGameRole.range)
+      if (i === getRoleById(currentGameId).range)
         setBallsNumber(numbers)
     }
     
-  }, [currentGameRole])
+  }, [currentGameId])
 
   return <Container>{ballsNumber.map((number) => <Ball key={number} number={number} />)}</Container>;
 };

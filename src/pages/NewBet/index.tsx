@@ -14,7 +14,7 @@ const initialRequestInfo: IRequestInfo<any, boolean> = {
 }
 
 const NewBet: React.FC = () => {
-  const {windowWidth, currentGameRole, setLotteryRoles} = useApp()
+  const {windowWidth, currentGameId, getRoleById, setLotteryRoles} = useApp()
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   const [requestInfo, setRequestInfo] = useState<IRequestInfo<any, boolean>>(initialRequestInfo)
@@ -36,7 +36,7 @@ const NewBet: React.FC = () => {
         <section>
           <HeaderContent>
             <Div>
-              <p><strong>New bet</strong> for <span>{currentGameRole.type}</span></p>
+              <p><strong>New bet</strong> for <span>{getRoleById(currentGameId).type}</span></p>
               
               {windowWidth < 950 && <button onClick={() => setIsModalOpen(!isModalOpen)}><i className="bi bi-cart3" /></button>}
             </Div>
@@ -48,7 +48,7 @@ const NewBet: React.FC = () => {
             
             <p>
               <strong>Fill your bet</strong> <br />
-              {currentGameRole.description}
+              {getRoleById(currentGameId).description}
             </p>
           </HeaderContent>
 

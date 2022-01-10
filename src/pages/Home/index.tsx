@@ -23,7 +23,7 @@ const Home: React.FC = () => {
   }
 
   useEffect(() => {
-    updateFilters('', '')
+    updateFilters('', 0)
 
     if (requestInfo.loading) {
       setRequestInfo(prevInfo => { return { ...prevInfo, loading: false } })

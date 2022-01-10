@@ -4,7 +4,7 @@ import { Button } from "./style";
 
 const Ball: React.FC<{number: number}> = (props) => {
   const [isActive, setIsActive] = useState(false)
-  const {currentGameRole, currentBet, addBetNumber, removeBetNumber} = useApp()
+  const {currentGameId, getRoleById, currentBet, addBetNumber, removeBetNumber} = useApp()
 
   const onClickHandler = () => {
     if (!isActive) {
@@ -28,7 +28,7 @@ const Ball: React.FC<{number: number}> = (props) => {
   }, [currentBet])
 
   return (
-    <Button value={props.number} active={isActive} color={currentGameRole.color} onClick={onClickHandler}>
+    <Button value={props.number} active={isActive} color={getRoleById(currentGameId).color} onClick={onClickHandler}>
       <h2>{props.number.toString().padStart(2, "0")}</h2>
     </Button>
   );

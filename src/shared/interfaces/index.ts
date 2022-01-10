@@ -58,7 +58,7 @@ export interface IRequestInfo<T, D> {
 }
 
 export interface IApiPostGames {
-  id: number;
+  game_id: number;
   numbers: number[]
 }
 

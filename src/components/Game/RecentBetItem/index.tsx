@@ -4,8 +4,8 @@ import { IBet } from "@src/shared/interfaces";
 import { Item } from "./style";
 
 const RecentBetItem: React.FC<{recentBet: IBet}> = (props) => {
-  const {getRole} = useApp()
-  const itemRole = getRole(props.recentBet.game_id)
+  const {getRoleById} = useApp()
+  const itemRole = getRoleById(props.recentBet.game_id)
 
   return (
     <Item color={itemRole.color}>

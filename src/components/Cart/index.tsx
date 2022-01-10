@@ -14,7 +14,7 @@ const initialRequestInfo: IRequestInfo<IBet[], any> = {
 };
 
 const Cart: React.FC<{ closeModal?: () => void }> = (props) => {
-  const { cartTotal, windowWidth, cartItems, addRecentsBet, clearCart, updateCurrentTypeGame, setBetError, lotteryRoles } = useApp();
+  const { cartTotal, windowWidth, cartItems, clearCart, updateCurrentTypeGame, setBetError, lotteryRoles } = useApp();
   const [requestInfo, setRequestInfo] = useState(initialRequestInfo);
   const navigate = useNavigate()
 
@@ -33,17 +33,16 @@ const Cart: React.FC<{ closeModal?: () => void }> = (props) => {
   };
 
   const successHandler = () => {
-    addRecentsBet(requestInfo.data)
     clearCart()
     setRequestInfo(initialRequestInfo);
-    updateCurrentTypeGame(lotteryRoles.types[0])
+    updateCurrentTypeGame(lotteryRoles.types[0].id)
     setBetError({isError: true, message: 'Successful purchase', icon: 'check', color: '#34aa44'})
   }
 
   const fetchNewGames = async () => {
     const games: IApiPostGames[] = cartItems.map((item) => {
       return {
-        id: item.game_id,
+        game_id: item.game_id,
         numbers: JSON.parse('[' + item.choosen_numbers + ']'),
       };
     });
