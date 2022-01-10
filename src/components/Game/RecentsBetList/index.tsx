@@ -20,7 +20,6 @@ const RecentBetList: React.FC = () => {
 
   const fetchRecentsGame = async () => {
     const filtteredGamesType = filters.map(filter => getRoleById(filter).type)
-    console.log(filtteredGamesType)
     let formattedFilter = await formatFiltersToAPI(filtteredGamesType)
     const response = await ListBets(formattedFilter)
 
@@ -38,7 +37,7 @@ const RecentBetList: React.FC = () => {
 
   if (requestInfo.loading) return <InfoText>Loading...</InfoText>
 
-  if (recentsBet.length === 0 && !recentsBet.some(recentBet => getRoleById(recentBet.game_id).type === getRoleById(currentGameId).type)) return <InfoText>No recent {getRoleById(currentGameId).type} game found.</InfoText>
+  if (recentsBet.length === 0) return <InfoText>No recent game found.</InfoText>
 
   return (
     <>

@@ -11,6 +11,7 @@ const FeedbackMessage: React.FC = () => {
     if (betError.isError) {
       setTimeout(() => {
         setBetError(initialBetError)
+        localStorage.removeItem('isPurchaseSuccessful')
       }, 4000);
     }
   }, [betError]);

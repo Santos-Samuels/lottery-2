@@ -1,46 +1,28 @@
-import { RecentBetList, AppContainer, HeaderRecentGame, Loading } from "@components/index";
+import { RecentBetList, AppContainer, HeaderRecentGame, FeedbackMessage } from "@components/index";
 import { useApp } from "@src/hooks/useapp";
-import { ILotteryRoles, IRequestInfo } from "@src/shared/interfaces";
-import { useEffect, useState } from "react";
-import { ListGames } from "@src/shared/services";
-
-const initialRequestInfo: IRequestInfo<any, boolean> = {
-  loading: true,
-  data: null,
-  error: false,
-  success: false
-}
+import { useEffect } from "react";
 
 const Home: React.FC = () => {
-  const {setLotteryRoles, updateFilters} = useApp()
-  const [requestInfo, setRequestInfo] = useState<IRequestInfo<any, boolean>>(initialRequestInfo)
-
-  const fetchLotteryRoles = async () => {
-    const response = await ListGames()
-
-    if (response)
-      setLotteryRoles(response as ILotteryRoles)
-  }
+  const {updateFilters, setBetError} = useApp()
+  const isPurchaseSuccessful = localStorage.getItem('isPurchaseSuccessful') ? JSON.parse(localStorage.getItem('isPurchaseSuccessful')!) : false
 
   useEffect(() => {
     updateFilters('', 0)
 
-    if (requestInfo.loading) {
-      setRequestInfo(prevInfo => { return { ...prevInfo, loading: false } })
-      fetchLotteryRoles()
-    }
+    if(isPurchaseSuccessful)
+      setBetError({isError: true, message: 'Successful purchase', icon: 'check', color: '#34aa44'})
   }, [])
-
-  if (requestInfo.loading) return <Loading />
 
   return (
     <AppContainer>
       <div>
         <HeaderRecentGame />
         <RecentBetList />
+        {isPurchaseSuccessful && <FeedbackMessage />}
       </div>
     </AppContainer>
   );
 };
 
 export default Home;
+

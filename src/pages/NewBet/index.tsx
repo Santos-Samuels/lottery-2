@@ -1,34 +1,16 @@
-import { AppContainer, TypeButtonList, BallsList, Cart, ActionButtonList, CartModal, Loading, FeedbackMessage } from '@components/index'
+import { AppContainer, TypeButtonList, BallsList, Cart, ActionButtonList, CartModal, FeedbackMessage } from '@components/index'
 import { useApp } from '@src/hooks/useapp';
-import api from '@src/shared/services/api';
-import { ILotteryRoles, IRequestInfo } from '@src/shared/interfaces';
 import { useEffect, useState } from 'react';
 import { Content, Div, HeaderContent } from './style';
 
 
-const initialRequestInfo: IRequestInfo<any, boolean> = {
-  loading: true,
-  data: null,
-  error: false,
-  success: false
-}
-
 const NewBet: React.FC = () => {
-  const {windowWidth, currentGameId, getRoleById, setLotteryRoles} = useApp()
+  const {windowWidth, currentGameId, getRoleById, updateCurrentTypeGame, lotteryRoles} = useApp()
   const [isModalOpen, setIsModalOpen] = useState(false)
 
-  const [requestInfo, setRequestInfo] = useState<IRequestInfo<any, boolean>>(initialRequestInfo)
-  
   useEffect(() => {
-    if (requestInfo.loading) {
-      api.get<ILotteryRoles>('/cart_games').then(response => {
-        setRequestInfo(prevInfo => {return { ...prevInfo, loading: false }})
-        setLotteryRoles(response.data)
-      })
-    }
+    updateCurrentTypeGame(lotteryRoles.types[0].id)
   }, [])
-  
-  if (requestInfo.loading) return <Loading />
 
   return (
     <AppContainer>

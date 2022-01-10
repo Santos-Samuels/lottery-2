@@ -36,7 +36,7 @@ const Cart: React.FC<{ closeModal?: () => void }> = (props) => {
     clearCart()
     setRequestInfo(initialRequestInfo);
     updateCurrentTypeGame(lotteryRoles.types[0].id)
-    setBetError({isError: true, message: 'Successful purchase', icon: 'check', color: '#34aa44'})
+    localStorage.setItem('isPurchaseSuccessful', 'true')
   }
 
   const fetchNewGames = async () => {

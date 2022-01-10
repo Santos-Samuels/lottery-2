@@ -76,6 +76,8 @@ export const AppProvider: React.FC = (props) => {
       setFilters(newFilters);
       return;
     }
+
+    setFilters([])
   }
 
   const updateCurrentTypeGame = (newCurrentGameId: number) => {
