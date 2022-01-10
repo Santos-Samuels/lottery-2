@@ -25,7 +25,7 @@ const GameTypeButton: React.FC<IPropsGameTypeButton> = (props) => {
   }
 
   return (
-    <Button color={props.gameRole.color} active={getRoleById(currentGameId).type === props.gameRole.type} onClick={() => updateCurrentTypeGame(props.gameRole.id)}>
+    <Button color={props.gameRole.color} active={getRoleById(currentGameId).id === props.gameRole.id} onClick={() => updateCurrentTypeGame(props.gameRole.id)}>
       {props.gameRole.type}
     </Button>
   );

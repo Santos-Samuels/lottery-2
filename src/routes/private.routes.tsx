@@ -13,7 +13,7 @@ const initialRequestInfo: IRequestInfo<any, boolean> = {
 }
 
 const PrivateRoute: React.FC = () => {
-  const {setLotteryRoles, lotteryRoles, updateCurrentTypeGame} = useApp()
+  const {setLotteryRoles, updateCurrentTypeGame} = useApp()
   const TOKEN = localStorage.getItem('TOKEN') === 'undefined' ? null : localStorage.getItem('TOKEN')
   const [requestInfo, setRequestInfo] = useState<IRequestInfo<any, boolean>>(initialRequestInfo)
 

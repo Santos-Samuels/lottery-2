@@ -1,10 +1,9 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-
 import { Login, Register, ResetPassword, Home, NewBet, Account, NotFound } from "@src/pages";
 import '../index.css'
-import PrivateRoute from '@src/routes/PrivateRoute';
+import PrivateRoute from '@src/routes/private.routes';
 
-const App: React.FC = () => {
+const AppRoutes: React.FC = () => {
   return (
     <BrowserRouter>
       <Routes>
@@ -24,4 +23,4 @@ const App: React.FC = () => {
   );
 };
 
-export default App
+export default AppRoutes
